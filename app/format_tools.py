@@ -35,7 +35,7 @@ def to_hex(num):
 
 
 def to_bytes(num):
-    """COnvert to hex, then split into full bytes."""
+    """Convert to hex, then split into full bytes."""
     hex_ = to_hex(num)
     #hex_ = add_padding(hex_, 8)
     hex_as_bytes = split_string(hex_, 8)
