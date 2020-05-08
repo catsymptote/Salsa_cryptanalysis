@@ -52,12 +52,14 @@ def test_make_word():
 
 
 def test_init():
-    prg = PRG()
-    assert type(prg) is PRG
+    prg1 = PRG()
+    assert type(prg1) is PRG
 
-    assert len(prg.a_vects) == len(prg.b_vects) == len(PRG.A_VECTOR) == len(PRG.B_VECTOR) == 4
-    assert len(prg.a_vects[0]) == 32
+    assert len(prg1.a_vects) == len(prg1.b_vects) == len(PRG.A_VECTOR) == len(PRG.B_VECTOR) == 4
+    assert len(prg1.a_vects[0]) == 32
 
+    prg2 = PRG(test_mode=True)
+    assert prg2.test_mode == True
 
 
 def test_to_ascii():

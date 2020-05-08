@@ -19,7 +19,9 @@ class PRG():
     ]
 
 
-    def __init__(self):
+    def __init__(self, test_mode:bool=False):
+        self.test_mode = test_mode
+        
         self.a_vects = []
         self.b_vects = []
 
@@ -39,6 +41,7 @@ class PRG():
         self.shift_length   = 0
         self.QRs            = 0
         self.total_runs     = 0
+        self.QR_test_vals   = []
 
 
     def to_ascii(self, a:str) -> int:
@@ -190,6 +193,9 @@ class PRG():
         y0 = self.quarter(x0, y3, y2, 18)
         
         y = (y0, y1, y2, y3)
+
+        if self.test_mode:
+            self.QR_test_vals.append(y)
         return y
 
 

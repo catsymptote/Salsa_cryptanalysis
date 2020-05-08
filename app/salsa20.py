@@ -6,9 +6,15 @@ import random
 class Salsa20:
     def __init__(self, mode:str='full', static_nonce=None, chacha=False):
         if chacha:
-            self.prg = Chacha_PRG()
+            if mode == 'test':
+                self.prg = Chacha_PRG(test_mode=True)
+            else:
+                self.prg = Chacha_PRG()
         else:
-            self.prg = PRG()
+            if mode == 'test':
+                self.prg = PRG(test_mode=True)
+            else:
+                self.prg = PRG()
         
         self.mode = mode
         self.static_nonce = static_nonce
