@@ -5,9 +5,17 @@ import random
 
 
 def test_init():
-    sal = Salsa20()
-    assert type(sal) is Salsa20
-    assert type(sal.prg) is PRG
+    sal1 = Salsa20()
+
+    stat_nonce = '11011011'*16
+    sal2 = Salsa20(mode='test', static_nonce=stat_nonce)
+
+    assert type(sal1) is type(sal2) is Salsa20
+    assert type(sal1.prg) is type(sal2.prg) is PRG
+
+    assert sal1.static_nonce == None
+    assert sal2.static_nonce == stat_nonce
+
 
 
 def test_encrypt():
@@ -166,3 +174,22 @@ def test_generate_nonce():
     
     nonce_set = set(nonce_list)
     assert len(nonce_list) == len(nonce_set)
+
+
+def test_mode():
+    data = 'Hello World!'
+    stat_nonce = '11011011'*16
+    key = '10010110'*16
+
+    sal1 = Salsa20()
+    sal2 = Salsa20(static_nonce=stat_nonce, mode='test')
+
+    assert sal1.mode == 'full'
+    assert sal2.mode == 'test'
+
+    ct1, nonce1 = sal1.encrypt(data, key)
+    ct2, nonce2 = sal2.encrypt(data, key)
+
+    assert ct1 != ct2
+    assert nonce1 != nonce2
+    

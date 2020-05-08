@@ -1,15 +1,20 @@
 from .prg import PRG
+from .chacha_prg import Chacha_PRG
 import random
 
 
 class Salsa20:
-    def __init__(self, mode:str='full', static_nonce=None):
-        self.prg = PRG()
+    def __init__(self, mode:str='full', static_nonce=None, chacha=False):
+        if chacha:
+            self.prg = Chacha_PRG()
+        else:
+            self.prg = PRG()
+        
         self.mode = mode
         self.static_nonce = static_nonce
 
 
-    def encrypt(self, data:str, key:str, nonce=None):
+    def encrypt(self, data:str, key:str, nonce=None) -> tuple:
         data = self.to_binary(data)
         data = self.add_padding(data)
         data, nonce = self.crypt(data, key, nonce)
@@ -17,7 +22,7 @@ class Salsa20:
         return data, nonce
 
 
-    def decrypt(self, data:str, key:str, nonce):
+    def decrypt(self, data:str, key:str, nonce) -> str:
         data = self.to_binary(data)
         data, nonce = self.crypt(data, key, nonce)
         data = self.remove_padding(data)
@@ -25,7 +30,7 @@ class Salsa20:
         return data
 
 
-    def crypt(self, data, key, nonce=None):
+    def crypt(self, data, key, nonce=None) -> tuple:
         # Split the data.
         blocks = []
         length = int(len(data)/512)
@@ -40,6 +45,7 @@ class Salsa20:
         if nonce is None:
             nonce = self.generate_nonce()
         else:
+            print(len(nonce), nonce)
             assert len(nonce) == 64
 
         ciphertext = ''
@@ -59,7 +65,7 @@ class Salsa20:
         return ciphertext, nonce
 
 
-    def make_nonce(self, nonce, block_number):
+    def make_nonce(self, nonce, block_number) -> str:
         """Return the nonce
         (A combination of the nonce and the
         block number as a binary representation.)
@@ -73,7 +79,7 @@ class Salsa20:
         return nonce_block
 
     
-    def xor(self, a, b):
+    def xor(self, a, b) -> str:
         c = ''
         for i in range(len(a)):
             if a[i] == b[i]:
@@ -83,7 +89,7 @@ class Salsa20:
         return c
 
 
-    def add_padding(self, data):
+    def add_padding(self, data) -> str:
         """Add padding to make the data fit in packets of 64 bytes."""
         # Simple but probably not correct.
         package_count = 1
@@ -96,7 +102,7 @@ class Salsa20:
         return data
 
 
-    def remove_padding(self, data):
+    def remove_padding(self, data) -> str:
         """Removes 0s at the end of the string."""
         while data[-8:] == '00000000':
             data = data[0:-8]
@@ -104,7 +110,7 @@ class Salsa20:
         return data
     
 
-    def to_binary(self, text:str):
+    def to_binary(self, text:str) -> str:
         """Convert from text (ascii) to binary string."""
         chars = [char for char in text]
         binary = ''
@@ -118,7 +124,7 @@ class Salsa20:
         return binary
 
 
-    def to_text(self, binary_data:str):
+    def to_text(self, binary_data:str) -> str:
         """Convert from binary to text (ascii)."""
         # Split into bytes
         ascii_bytes = []
@@ -142,7 +148,7 @@ class Salsa20:
         return text
 
 
-    def split_key(self, key):
+    def split_key(self, key) -> tuple:
         """Splits or copies the single key into two partial keys."""
         if len(key) == 128:
             return key, key, False
@@ -150,7 +156,7 @@ class Salsa20:
             return key[0:128], key[128:256], True
 
 
-    def generate_block_number(self, number):
+    def generate_block_number(self, number) -> str:
         """Converts number to an 8-byte binary number."""
         bin_number = bin(number)[2:]
         while len(bin_number) < 64:
@@ -158,7 +164,7 @@ class Salsa20:
         return bin_number
 
 
-    def generate_nonce(self):
+    def generate_nonce(self) -> str:
         """Generates nonce. That is, a random 8-byte binary number."""
         nonce = ''
         for i in range(64):

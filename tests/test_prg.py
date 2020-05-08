@@ -167,7 +167,7 @@ def test_binary_left_rotation():
     assert output == '11011110'
 
 
-def test_querter():
+def test_quarter():
     """
     xor_a = 10010101
     add_a = 01001001
@@ -196,7 +196,7 @@ def test_querter():
     assert output == '01001011' # inverse shift --> '01111011'
 
 
-def test_querterround_function():
+def test_quarterround_function():
     prg = PRG()
     x = make_words(n=4)
     output = prg.quarterround_function(x)

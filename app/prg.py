@@ -41,15 +41,15 @@ class PRG():
         self.total_runs     = 0
 
 
-    def to_ascii(self, a:str):
+    def to_ascii(self, a:str) -> int:
         return ord(a)
 
 
-    def from_ascii(self, a:int):
+    def from_ascii(self, a:int) -> chr:
         return chr(a)
 
 
-    def to_binary(self, a:int):
+    def to_binary(self, a:int) -> str:
         binary = bin(a)
         binary = binary[2:]
         while len(binary)%8 != 0:
@@ -64,7 +64,7 @@ class PRG():
         return int(a, 2)
 
 
-    def to_bytes(self, a, length=8):
+    def to_bytes(self, a, length=8) -> tuple:
         if type(a) is tuple:
             a = self.to_bits(a)
         
@@ -78,11 +78,11 @@ class PRG():
         return tuple(byte_list)
 
 
-    def to_words(self, a):
+    def to_words(self, a) -> tuple:
         return self.to_bytes(a, length=32)
 
 
-    def to_bits(self, a:tuple):
+    def to_bits(self, a:tuple) -> str:
         bits = ''
         for element in a:
             if type(element) is tuple:
@@ -92,7 +92,7 @@ class PRG():
             
 
 
-    def sum_words(self, bin_a:str, bin_b:str):
+    def sum_words(self, bin_a:str, bin_b:str) -> str:
         dec_a = self.from_binary(bin_a)
         dec_b = self.from_binary(bin_b)
         dec_c = dec_a + dec_b
@@ -107,7 +107,7 @@ class PRG():
         return bin_c
 
 
-    def xor(self, a:str, b:str):
+    def xor(self, a:str, b:str) -> str:
         # Length adjustment.
         if len(a) != len(b):
             while len(a) < len(b):
@@ -132,7 +132,7 @@ class PRG():
         return c
 
 
-    def binary_left_rotation(self, word:str, a):
+    def binary_left_rotation(self, word:str, a) -> str:
         """Shift"""
         new_word = ''
         for i in range(len(word)):
@@ -140,7 +140,7 @@ class PRG():
         return new_word
 
 
-    def quarter(self, xor_a:str, add_a:str, add_b:str, shift:int):
+    def quarter(self, xor_a:str, add_a:str, add_b:str, shift:int) -> str:
         """
         y_n = xor_a XOR ((add_a + add_b) <<< shift)
 
@@ -154,7 +154,7 @@ class PRG():
         return y_n
 
 
-    def quarterround_function(self, x:tuple):
+    def quarterround_function(self, x:tuple) -> tuple:
         """
         # y1 = x1 XOR ((x0+x3) <<< 7)
         # y2 = x2 XOR ((y1+x0) <<< 9)
@@ -193,7 +193,7 @@ class PRG():
         return y
 
 
-    def rowround_function(self, x:tuple):
+    def rowround_function(self, x:tuple) -> tuple:
         y = []
         assert len(x) == 16
         for i in range(4):
@@ -207,7 +207,7 @@ class PRG():
         return tuple(y)
 
 
-    def columnround_function(self, x:tuple):
+    def columnround_function(self, x:tuple) -> tuple:
         y = []
         assert len(x) == 16
         for i in range(4):
@@ -225,14 +225,14 @@ class PRG():
         return tuple(y)
     
 
-    def doubleround_function(self, x:tuple):
+    def doubleround_function(self, x:tuple) -> tuple:
         assert len(x) == 16
         return_value = self.rowround_function(self.columnround_function(x))
         assert len(return_value) == 16
         return return_value
 
 
-    def littleendian_function(self, word:str):
+    def littleendian_function(self, word:str) -> str:
         """Reverse the order of the bytes."""
         b_bytes = []
         assert len(word) == 32
@@ -250,7 +250,7 @@ class PRG():
         return b_new
 
 
-    def hash_function(self, words:tuple):
+    def hash_function(self, words:tuple) -> str:
         """The hash function does the following:
         1. Split the 64 byte input into 16 words.
         2. For all words: Update by littleendian function.
@@ -298,7 +298,7 @@ class PRG():
         return output
     
 
-    def expansion_function(self, key0:str, key1:str, nonce:str, full_key:bool):
+    def expansion_function(self, key0:str, key1:str, nonce:str, full_key:bool) -> str:
         """Main (first/input) function of the salsa20 pseudo random generator (PRG).
         key0 and key1 are 16 bytes each.
             - If the key is a 32-bit key, key0 and key1 each contains their half.
