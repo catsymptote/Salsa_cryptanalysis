@@ -192,4 +192,3 @@ def test_mode():
 
     assert ct1 != ct2
     assert nonce1 != nonce2
-    
