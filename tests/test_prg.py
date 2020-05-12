@@ -1,6 +1,6 @@
 import pytest
 
-from app.prg import PRG
+from salsa.prg import PRG
 
 
 def make_words(n=1, as_tuple=True):

@@ -1,6 +1,6 @@
-from app.chacha_prg import Chacha_PRG
-from app.prg import PRG
-from app.salsa20 import Salsa20
+from salsa.chacha_prg import Chacha_PRG
+from salsa.prg import PRG
+from salsa.salsa20 import Salsa20
 
 # Import test tools
 from tests.test_prg import make_words

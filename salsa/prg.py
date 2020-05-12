@@ -41,7 +41,9 @@ class PRG():
         self.shift_length   = 0
         self.QRs            = 0
         self.total_runs     = 0
-        self.QR_test_vals   = []
+        self.QR_x           = []
+        self.QR_y           = []
+        self.DRF_in            = []
 
 
     def to_ascii(self, a:str) -> int:
@@ -195,7 +197,8 @@ class PRG():
         y = (y0, y1, y2, y3)
 
         if self.test_mode:
-            self.QR_test_vals.append(y)
+            self.QR_x.append(x)
+            self.QR_y.append(y)
         return y
 
 
@@ -232,6 +235,7 @@ class PRG():
     
 
     def doubleround_function(self, x:tuple) -> tuple:
+        self.DRF_in.append(x)
         assert len(x) == 16
         return_value = self.rowround_function(self.columnround_function(x))
         assert len(return_value) == 16

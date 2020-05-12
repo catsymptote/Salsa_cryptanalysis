@@ -1,6 +1,6 @@
 import pytest
-from app.salsa20 import Salsa20
-from app.prg import PRG
+from salsa.salsa20 import Salsa20
+from salsa.prg import PRG
 import random
 
 
