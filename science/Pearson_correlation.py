@@ -44,3 +44,21 @@ def Pearson_correlation(X:list, Y:list) -> int:
 
     r = top / bottom
     return r
+
+
+def Pearson_on_list_of_lists(X:list) -> list:
+    """Compare one element to the next in a list of lists.
+    Return the list of results.
+    Input: list of lists
+    Output: list."""
+    assert len(X) > 1
+    assert type(X[0]) is list
+    print(type(X[0][0]), X[0][0])
+    assert type(X[0][0]) is int or type(X[0][0]) is float
+
+    results = []
+
+    for i in range(len(X) - 1):
+        results.append(Pearson_correlation(X[i], X[i + 1]))
+    
+    return results

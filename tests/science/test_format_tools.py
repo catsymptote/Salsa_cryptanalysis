@@ -57,3 +57,57 @@ def test_to_bytes():
     assert to_bytes(num2)  == '00000020'
     assert to_bytes(num3)  == '00000080'
     assert to_bytes(num4)  == '00000022 ecb25c00'
+
+
+def test_to_ints():
+    a = ['0110', '1001']
+    b = ['0101', '1010']
+    x = [a, b]
+    y = to_ints(x)
+
+    assert len(y) == 2
+    assert len(y[0]) == 2
+    assert len(y[1]) == 2
+
+    assert y[0][0] == 6
+    assert y[0][1] == 9
+    assert y[1][0] == 5
+    assert y[1][1] == 10
+
+
+def test_is_binary():
+    # Binary
+    b_1 = '011001'
+    b_2 = '1'
+    b_3 = '0'
+    b_4 = '11111'
+    b_5 = '00000'
+    b_6 = '100010100100010010100101'
+
+    # Hex
+    h_1 = '18ed7dfa'
+    h_2 = '1004101'
+
+    # Other string/number
+    i_1 = 101001
+    i_2 = 12345
+    s_1 = 'kake'
+    s_2 = '15g4'
+    
+    assert is_binary(b_1)
+    assert is_binary(b_2)
+    assert is_binary(b_3)
+    assert is_binary(b_4)
+    assert is_binary(b_5)
+    assert is_binary(b_6)
+
+    assert not is_binary(h_1)
+    assert not is_binary(h_2)
+    assert not is_binary(i_1)
+    assert not is_binary(i_2)
+    assert not is_binary(s_1)
+    assert not is_binary(s_2)
+
+
+def test_is_hex():
+    pass

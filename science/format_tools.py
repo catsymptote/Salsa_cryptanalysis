@@ -1,3 +1,6 @@
+import random
+
+
 def add_padding(text, padding_increment, padding_symbol='0'):
     """Add padding such that the text is always
     of length n*padding_increment."""
@@ -24,6 +27,10 @@ def split_string(text, space):
     return split_text[:-1]
 
 
+################
+## Convertion ##
+################
+
 def to_hex(num):
     """Convert bin (str) and int into hex (str)."""
     # Fix int/bin.
@@ -40,3 +47,99 @@ def to_bytes(num):
     #hex_ = add_padding(hex_, 8)
     hex_as_bytes = split_string(hex_, 8)
     return hex_as_bytes
+
+
+def to_ints(X:list):
+    """Converts:
+    list(list(binary:str)) --> list(list(int))
+    It does this recursively, so it will work for list(binary:str) as well.
+    """
+
+    if len(X) == 0:
+        assert False
+        return None
+    
+    if type(X) is tuple:
+        X = list(X)
+    
+    for i in range(len(X)):
+        in_X = X[i]
+
+        if type(X[i]) is list or type(X[i]) is tuple:
+            X[i] = to_ints(X[i])
+        elif is_binary(X[i]):
+            X[i] = int(X[i], 2)
+        elif is_hex(X[i]):
+            X[i] = int(X[i], 16)
+        else:
+            print(X[i])
+            assert False
+            return None
+
+    return X
+
+
+
+def flatten_list(X:list, flattened_list=None):
+    """Takes 2 layers of depth."""
+    flat_list = []
+    for sublist in X:
+        for item in sublist:
+            flat_list.append(item)
+    return flat_list
+
+
+#################
+## Type checks ##
+#################
+
+def is_binary(num):
+    """Checks if the number is in binary form.
+    (Not including '0b' in front.)"""
+    if type(num) is not str:
+        return False
+    
+    for char in num:
+        if char != '0' and char != '1':
+            return False
+    
+    return True
+
+
+def is_hex(num):
+    if type(num) is not str:
+        return False
+    
+    if is_binary(num):
+        return False
+
+    hex_chars = '0123456789abcdef'
+    for char in num:
+        if char not in hex_chars:
+            return False
+    
+    return True
+
+
+############
+## Prints ##
+############
+
+def print_list_of_lists(X, print_index:bool = True):
+    for i in range(len(X)):
+        if print_index:
+            print(i, end=':\t')
+        for word in X[i]:
+            print(to_bytes(word), end=' ')
+        print()
+
+
+################
+## Generators ##
+################
+
+def get_random_binary(amount_of_bits):
+    binary_number = ''
+    for i in range(amount_of_bits):
+        binary_number += random.choice(['0', '1'])
+    return binary_number

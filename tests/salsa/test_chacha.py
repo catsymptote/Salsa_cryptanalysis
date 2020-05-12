@@ -2,9 +2,9 @@ from salsa.chacha_prg import Chacha_PRG
 from salsa.prg import PRG
 from salsa.salsa20 import Salsa20
 
-# Import test tools
-from tests.test_prg import make_words
-from tests.test_salsa20 import full_crypto
+# Import test tools.
+from tests.salsa.test_prg import make_words
+from tests.salsa.test_salsa20 import full_crypto
 
 
 #########

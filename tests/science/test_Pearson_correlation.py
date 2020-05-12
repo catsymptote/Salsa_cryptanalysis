@@ -71,3 +71,22 @@ def test_Pearson_correlation():
     spss_Y = [3, 7, 6, 4, 3, 4, 5, 4, 1, 0]
     result5 = Pearson_correlation(spss_X, spss_Y)
     assert roughly_equal(result5, 0.785, d=1000)
+
+
+def test_Pearson_on_list_of_lists():
+    a = [1, 5, 9, 2, 3]
+    b = [3, 5, 1, 6, 8]
+    c = [1, 2, 3, 4, 5]
+    d = [5, 4, 3, 2, 1]
+    X = [a, b, c, d]
+
+    results = Pearson_on_list_of_lists(X)
+
+    assert type(results) is list
+    assert len(results) == 3
+    
+    # Test [0] and [1] are assumed from the output.
+    # Test [2] is calculated.
+    assert roughly_equal(results[0], -0.5559454491816201)
+    assert roughly_equal(results[1], 0.643726309578718)
+    assert roughly_equal(results[2], -1)
