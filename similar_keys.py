@@ -9,30 +9,31 @@ def show_similar_keys(
         num_of_keys:int = 10,
         show_key_distance:bool = True,
         show_QR_distance:bool = True,
-        modify_keys:bool = True):
+        modify_keys:bool = True,
+        size:int = 128):
     # Setup
     data = 'cryptography'
     #key = '10'*64
-    key = get_random_binary(128)
+    key = get_random_binary(size)
 
     rounds = 80
 
     # Create random keys.
     ks = []
     for i in range(num_of_keys):
-        ks.append(get_random_binary(128))
+        ks.append(get_random_binary(size))
 
     # Modify keys to make some of them
     # more similar to the original key.
     if modify_keys:
         ks[0] = key
-        ks[1] = flip_bits_in_word(key, amount=1)
-        ks[2] = flip_bits_in_word(key, amount=4)
+        ks[1] = flip_random_bit(key, amount=1)
+        ks[2] = flip_random_bit(key, amount=4)
         ks[3] = '0' + key[1:]
         #ks[4] = key[:-16] + '0'*16
-        ks[5] = flip_bits_in_word(key, amount=16)
-        ks[6] = flip_bits_in_word(key, amount=64)
-        ks[7] = flip_bits_in_word(key)
+        #ks[5] = flip_random_bit(key, amount=16)
+        #ks[6] = flip_random_bit(key, amount=64)
+        ks[7] = flip_random_bit(key)
     
 
     # Find key distances.
@@ -70,7 +71,7 @@ def show_similar_keys(
 
 
 if __name__ == '__main__':
-    return_values = show_similar_keys(num_of_keys=15, show_key_distance=False, show_QR_distance=True, modify_keys=True)
+    return_values = show_similar_keys(num_of_keys=15, show_key_distance=False, show_QR_distance=True, modify_keys=True, size=128)
     ks = return_values[0]
     key_QRs = return_values[1]
 

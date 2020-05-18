@@ -22,7 +22,7 @@ def bar_chart(values:list, titles=None, title='', x_label='x', y_label='y'):
     plt.show()
 
 
-def multi_line_chart(lines:list, increment=1, title=''):
+def multi_line_chart(lines:list, increment=1, title='', vertical_lines:list=None):
     if len(lines) > 1:
         for i in range(len(lines) - 1):
             assert len(lines[i]) == len(lines[i+1])
@@ -33,6 +33,10 @@ def multi_line_chart(lines:list, increment=1, title=''):
     for i in range(len(lines)):
         plt.plot(xs, lines[i], label=str(i))
     
+    if vertical_lines is not None:
+        for line in vertical_lines:
+            plt.axvline(x=line, color='red')
+
     plt.xlabel('rounds')
     plt.ylabel('Hamming distance')
     plt.legend()

@@ -1,4 +1,5 @@
 from science.format_tools import *
+from science.hamming_weight import *
 
 
 def test_add_padding():
@@ -103,6 +104,13 @@ def test_list_to_str():
     assert list_to_str(Y) == Z
 
 
+def test_str_to_list():
+    a = '1010'
+    b = '1111000011110000'
+    assert str_to_list(a) == ('1', '0', '1', '0')
+    assert str_to_list(b) == ('1111', '0000', '1111', '0000')
+
+
 #################
 ## Type checks ##
 #################
@@ -175,10 +183,47 @@ def test_get_random_binary():
         assert bit == '0' or bit == '1'
 
 
+def test_flip_random_bit():
+    X_0 = '10101010'
+    X_1 = ('1010', '0101', '1001', '0100')
+
+    flipped_0 = flip_random_bit(X_0)
+    flipped_1 = flip_random_bit(X_1)
+    
+    HD_0 = hamming_distance(X_0, flipped_0)
+    
+    HD_1 = 0
+    for i in range(len(X_1)):
+        HD_1 += hamming_distance(X_1[i], flipped_1[i])
+
+    assert HD_0 == -1 or HD_0 == 1
+    assert HD_1 == -1 or HD_1 == 1
+
+    for i in range(10):
+        flipped_0_multi = flip_random_bit(X_0, amount=4)
+        HD_0_multi = hamming_distance(X_0, flipped_0_multi)
+        assert HD_0_multi in [-4, -2, 0, 2, 4]
+
+
 def test_flip_bits():
     bits    = '1010010'
     flipped = '0101101'
     assert flip_bits(bits) == flipped
+
+
+def test_flip_bit_at():
+    bits_0 = '00000000'
+    assert flip_bit_at(bits_0, 0) == '10000000'
+    assert flip_bit_at(bits_0, 1) == '01000000'
+    assert flip_bit_at(bits_0, 2) == '00100000'
+    assert flip_bit_at(bits_0, 3) == '00010000'
+    assert flip_bit_at(bits_0, 7) == '00000001'
+
+    bits_1 = ('0000', '0000')
+    assert flip_bit_at(bits_1, 0) == ('1000', '0000')
+    assert flip_bit_at(bits_1, 1) == ('0100', '0000')
+    assert flip_bit_at(bits_1, 6) == ('0000', '0010')
+    assert flip_bit_at(bits_1, 7) == ('0000', '0001')
 
 
 def test_flip_bits_in_word():
@@ -191,3 +236,29 @@ def test_flip_bits_in_word():
     assert flip_bits_in_word(bits, amount=2) == flipped_last_2
     assert flip_bits_in_word(bits, amount=3) == flipped_last_3
     assert flip_bits_in_word(bits) == flipped_all
+
+
+def test_increment_bits():
+    a   = '00001101'
+    A   =     '1101'
+    a_  = '00001110'
+    A_   =    '1110'
+    a__ = '00001111'
+    A__ =     '1111'
+    a___= '00010000'
+    A___=    '10000'
+    assert increment_bits(a) == A_
+    assert increment_bits(a_) == A__
+    assert increment_bits(a__) == A___
+
+
+def test_increment_QR_X():
+    X = ('0000', '0000', '0000', '0000')
+    X_ = ('0000', '0000', '0000', '0001')
+    X__= ('0000', '0000', '0000', '0010')
+    X_64 = ('0000', '0000', '0100', '0000')
+
+    assert increment_QR_X(X) == X_
+    assert increment_QR_X(X_) == X__
+    assert increment_QR_X(X, step=2) == X__
+    assert increment_QR_X(X, step=64) == X_64

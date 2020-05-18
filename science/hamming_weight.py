@@ -69,3 +69,11 @@ if __name__ == __main__:
         distance = hamming_distance(QR_x, QRs[i])
         QR_distances.append(distance)
 """
+
+if __name__ == '__main__':
+    a = input('a:> ')
+    b = input('b:> ')
+    print(a)
+    print(b)
+    print(xor(a, b))
+    print(hamming_distance(a, b))
