@@ -23,6 +23,10 @@ def test_split_string():
     assert split_string(text4, 8) == '00000110'
 
 
+################
+## Convertion ##
+################
+
 def test_to_hex():
     text1 = '00000000'
     text2 = '11111111'
@@ -75,6 +79,34 @@ def test_to_ints():
     assert y[1][1] == 10
 
 
+def test_flatten_list():
+    X = ['1111', '1100', '1010']
+    Y = ['1010', '1100', '1111']
+    Z = ('1010', '1111', '0000')
+    XYZ = (X, Y, Z)
+    ZYX = [X, Y, Z]
+    expected = ['1111', '1100', '1010', '1010', '1100', '1111', '1010', '1111', '0000']
+
+    res_XYZ = flatten_list(XYZ)
+    res_YZX = flatten_list(ZYX)
+
+    assert type(res_XYZ) is type(res_YZX) is list
+    assert len(res_XYZ) == len(res_YZX) == 9
+    assert res_XYZ == res_YZX == expected
+
+
+def test_list_to_str():
+    X = ('1111', '1100', '1010')
+    Y = ['1111', '1100', '1010']
+    Z = '111111001010'
+    assert list_to_str(X) == Z
+    assert list_to_str(Y) == Z
+
+
+#################
+## Type checks ##
+#################
+
 def test_is_binary():
     # Binary
     b_1 = '011001'
@@ -111,3 +143,51 @@ def test_is_binary():
 
 def test_is_hex():
     pass
+
+
+############
+## Prints ##
+############
+
+def test_print_list_of_lists():
+    x0 = ['1001', '0110']
+    x1 = ['1010', '0101']
+    X = [x0, x1]
+    results = print_list_of_lists(X)
+    assert type(results) is type(None)
+
+
+def test_tab_print():
+    X = ['1001', '0110', '1010', '0101']
+    results = print_list_of_lists(X)
+    assert type(results) is type(None)
+
+
+################
+## Generators ##
+################
+
+def test_get_random_binary():
+    binary = get_random_binary(128)
+    assert type(binary) is str
+    assert len(binary) == 128
+    for bit in binary:
+        assert bit == '0' or bit == '1'
+
+
+def test_flip_bits():
+    bits    = '1010010'
+    flipped = '0101101'
+    assert flip_bits(bits) == flipped
+
+
+def test_flip_bits_in_word():
+    bits            = '1010010'
+
+    flipped_last_2  = '1010001'
+    flipped_last_3  = '1010101'
+    flipped_all     = '0101101'
+    
+    assert flip_bits_in_word(bits, amount=2) == flipped_last_2
+    assert flip_bits_in_word(bits, amount=3) == flipped_last_3
+    assert flip_bits_in_word(bits) == flipped_all

@@ -20,3 +20,21 @@ def bar_chart(values:list, titles=None, title='', x_label='x', y_label='y'):
     plt.title(title)
     plt.xticks(x_pos, titles)
     plt.show()
+
+
+def multi_line_chart(lines:list, increment=1, title=''):
+    if len(lines) > 1:
+        for i in range(len(lines) - 1):
+            assert len(lines[i]) == len(lines[i+1])
+
+    # Create x-labels.
+    xs = range(0, len(lines[0])*increment, increment)
+    
+    for i in range(len(lines)):
+        plt.plot(xs, lines[i], label=str(i))
+    
+    plt.xlabel('rounds')
+    plt.ylabel('Hamming distance')
+    plt.legend()
+    plt.title(title)
+    plt.show()

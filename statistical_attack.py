@@ -1,13 +1,12 @@
 from salsa.salsa20 import Salsa20
 from science.format_tools import *
-from science.science_tools import *
+from science.plot_tools import *
 from science.Pearson_correlation import Pearson_correlation, Pearson_on_list_of_lists
 
 import math
 
 
-
-def compare_multiple_keys(amount_of_test_values=100, QR_depth_index=0):
+def compare_multiple_keys(amount_of_test_values=100, QR_depth_index=0, sorted:bool = False):
     # Setup
     stat_nonce = '0' * 128
     message = '0'
@@ -36,11 +35,15 @@ def compare_multiple_keys(amount_of_test_values=100, QR_depth_index=0):
         similarity = Pearson_correlation(QR_0, QR_i)
         key_comparisons.append(similarity)
     
+    if sorted:
+        key_comparisons.sort()
+    
     # Plot
     bar_chart(key_comparisons)
+    return key_comparisons
 
 
-def next_element_comparison():
+def next_element_comparison(sorted:bool = False):
     # Setup
     stat_nonce = '0' * 128 #'11011011'*16
     message = '0' #'Hello World!'
@@ -64,12 +67,15 @@ def next_element_comparison():
     pearson_results = Pearson_on_list_of_lists(QR_x_int)
     for i in range(len(pearson_results)):
         print(i, '-', i+1, '\t', pearson_results[i])
-
-
+    
+    if sorted:
+        pearson_results.sort()
+    
     # Plot
     bar_chart(pearson_results)
+    return pearson_results
 
 
-
-compare_multiple_keys()
-#next_element_comparison()
+if __name__ == '__main__':
+    compare_multiple_keys(100, 0, True)
+    #next_element_comparison(sorted=True)

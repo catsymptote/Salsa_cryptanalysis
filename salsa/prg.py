@@ -35,6 +35,7 @@ class PRG():
             self.b_vects.append(b_n)
         
         # Log
+        self.single_xor     = 0
         self.XORs           = 0
         self.mod_adds       = 0
         self.shifts         = 0
@@ -43,7 +44,7 @@ class PRG():
         self.total_runs     = 0
         self.QR_x           = []
         self.QR_y           = []
-        self.DRF_in            = []
+        self.DRF_in         = []
 
 
     def to_ascii(self, a:str) -> int:
@@ -115,6 +116,7 @@ class PRG():
     def xor(self, a:str, b:str) -> str:
         # Length adjustment.
         if len(a) != len(b):
+            print('PRG-XOR : Difference in length:\nlen(a):', len(a), '\nlen(b):', len(b))
             while len(a) < len(b):
                 a = '0' + a
             while len(b) < len(a):
@@ -130,10 +132,13 @@ class PRG():
 
         c = ''
         for i in range(len(a)):
+            self.single_xor += 1
             if a[i] == b[i]:
                 c += '0'
             else:
                 c += '1'
+        
+        self.XORs += 1
         return c
 
 

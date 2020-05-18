@@ -79,7 +79,6 @@ def to_ints(X:list):
     return X
 
 
-
 def flatten_list(X:list, flattened_list=None):
     """Takes 2 layers of depth."""
     flat_list = []
@@ -87,6 +86,15 @@ def flatten_list(X:list, flattened_list=None):
         for item in sublist:
             flat_list.append(item)
     return flat_list
+
+
+def list_to_str(X:list):
+    """Converts a list of strings into a single string.
+    Mainly made for string(bin) --> bin."""
+    binary = ''
+    for elem in X:
+        binary += elem
+    return binary
 
 
 #################
@@ -134,12 +142,52 @@ def print_list_of_lists(X, print_index:bool = True):
         print()
 
 
+def tab_print(lst:list):
+    """Print a list with tabs between elements."""
+    for elem in lst:
+        print(elem, end='\t')
+    print()
+
+
 ################
 ## Generators ##
 ################
 
-def get_random_binary(amount_of_bits):
+def get_random_binary(amount_of_bits:int) -> str:
     binary_number = ''
     for i in range(amount_of_bits):
         binary_number += random.choice(['0', '1'])
     return binary_number
+
+
+def flip_bits(bits:str) -> str:
+    flipped_bits = ''
+    for bit in bits:
+        if bit == '0':
+            flipped_bits += '1'
+        else:
+            flipped_bits += '0'
+    
+    return flipped_bits
+
+
+def flip_bits_in_word(bits:str, amount:int = None) -> str:
+    #if stop is None:
+    #    stop = len(bits) - 1
+    if amount is None:
+        amount = 0
+
+    unchanged_bits = bits[:-amount]
+    remaining_bits = bits[-amount:]
+
+    flipped_bits = flip_bits(remaining_bits)
+    modified_bits = unchanged_bits + flipped_bits
+
+    return modified_bits
+
+
+def generate_random_QR_X(bits:int):
+    X = [None]*4
+    for i in range(4):
+        X[i] = get_random_binary(bits)
+    return tuple(X)
