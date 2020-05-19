@@ -2,7 +2,7 @@ from science.cryptography_tools import *
 from science.hamming_weight import *
 from science.format_tools import *
 from science.plot_tools import *
-from QR_attack import *
+from QR_attack_1 import *
 
 
 def compare_QR_with_similar_Xs(num_of_keys=10):

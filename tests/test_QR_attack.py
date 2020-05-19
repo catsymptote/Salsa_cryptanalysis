@@ -1,4 +1,4 @@
-from QR_attack import *
+from QR_attack_1 import *
 from science.cryptography_tools import Crypto_Tools
 
 

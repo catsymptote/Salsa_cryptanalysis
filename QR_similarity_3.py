@@ -6,7 +6,14 @@ from science.math_tools import *
 from science.Pearson_correlation import *
 
 
-def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True):
+def find_cross_point(Line, Value):
+    for i in range(len(Line)):
+        if Line[i] >= Value:
+            return i
+    return None
+
+
+def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True, QRFs=1):
     if n_mods is None:
         n_mods = bits
 
@@ -29,6 +36,9 @@ def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True):
 
             X = str_to_list(key_n)
             Y = crypt.use_QRF(X)
+            for i in range(QRFs - 1):
+                Y = crypt.use_QRF(Y)
+            
             Y_str = list_to_str(Y)
             HD = hamming_distance(Y_str, Y_base)
             HDs.append(HD)
@@ -47,12 +57,14 @@ def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True):
             HD = hamming_distance(Y_str, Y_base)
             random_HDs.append(HD)
         HD_avgs = average_lists(HD_avgs)
-        random_HDs.sort()
+        #random_HDs.sort()
         mini = min(random_HDs)
         mini_list = [mini] * len(random_HDs)
         maxi = max(random_HDs)
         maxi_list = [maxi] * len(random_HDs)
-        multi_line_chart([HD_avgs, random_HDs, mini_list, maxi_list], x_label='bits flipped', y_label='HD')
+        crossing_point = find_cross_point(HD_avgs, mini)
+        print(crossing_point)
+        multi_line_chart([HD_avgs, random_HDs, mini_list, maxi_list], vertical_lines=[crossing_point], x_label='bits flipped', y_label='HD')
     else:
         random_HDs = []
         for i in range(keys):
@@ -65,4 +77,4 @@ def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True):
 
 
 if __name__ == '__main__':
-    show_n_flip_trajectory(bits=512, n_mods=128, keys=1000)
+    show_n_flip_trajectory(bits=512, n_mods=128, keys=200, QRFs=1)
