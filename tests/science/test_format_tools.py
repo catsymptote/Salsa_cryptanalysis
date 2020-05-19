@@ -183,6 +183,24 @@ def test_get_random_binary():
         assert bit == '0' or bit == '1'
 
 
+def test_flip_n_bits():
+    a = '00000000'
+    b = '1001010101001010'
+    c = '0000000000000000'
+
+    a_ = flip_n_bits(a, 1)
+    b_ = flip_n_bits(b, 1)
+    a__ = flip_n_bits(a, 5)
+    b__ = flip_n_bits(b, 7)
+    c_ = flip_n_bits(c, 15)
+
+    assert hamming_distance(a, a_) == 1
+    assert hamming_distance(a, a__) == 5
+    assert hamming_distance(b, b_) == 1
+    assert hamming_distance(b, b__) == 7
+    assert hamming_distance(c, c_) == 15
+
+
 def test_flip_random_bit():
     X_0 = '10101010'
     X_1 = ('1010', '0101', '1001', '0100')

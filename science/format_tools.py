@@ -190,6 +190,26 @@ def get_random_binary(amount_of_bits:int) -> str:
     return binary_number
 
 
+def flip_n_bits(bits:str, n:int) -> str:
+    """Flip _exactly_ n bits of the 'bits' string.
+    len(bits) >= n.
+    It may be slow if, say, len(bits)==256 and n==255,
+    as it would have to guess different values."""
+    if n == 0:
+        return bits
+    if n >= len(bits):
+        return flip_bits(bits)
+
+    flips = set()
+    while len(flips) < n:
+        flips.add(random.randint(0, len(bits) - 1))
+    
+    for flip in flips:
+        bits = flip_bit_at(bits, flip)
+    
+    return bits
+
+
 def flip_random_bit(bits, amount=1):
     """Flips a single bit in input bits.
     bits should be list, tuple, or str."""

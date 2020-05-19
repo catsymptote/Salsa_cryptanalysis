@@ -17,3 +17,18 @@ def test_average_n():
     
     assert len(result) == len(values)/4 == 3
     assert result == [1.5, 5.5, 9.5]
+
+
+def test_average_lists():
+    a = [0, 1, 2, 3]
+    b = [1, 2, 3, 4]
+    c = [2, 3, 4, 5]
+    d = [1, 1, 1, 1]
+    X = [a, b, c, d]
+    Y_ = [1.5, 2.5, 3.5, 1]
+
+    Y = average_lists(X)
+    assert type(Y) is type(X) is list
+    assert len(Y) == len(X) == 4
+    assert type(Y[0]) is int or type(Y[0]) is float
+    assert Y == Y_

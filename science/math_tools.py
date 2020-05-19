@@ -15,3 +15,13 @@ def average_n(values:list, n=4) -> list:
         j = i*n
         avg_list.append(average(values[j:j+n]))
     return avg_list
+
+
+def average_lists(lists:list) -> list:
+    """list(list) --> list(int),
+    where the ints are the average of the internal list."""
+    list_of_avg = []
+    for lst in lists:
+        avg = average(lst)
+        list_of_avg.append(avg)
+    return list_of_avg
