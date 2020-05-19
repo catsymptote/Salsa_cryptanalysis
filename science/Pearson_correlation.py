@@ -62,3 +62,11 @@ def Pearson_on_list_of_lists(X:list) -> list:
         results.append(Pearson_correlation(X[i], X[i + 1]))
     
     return results
+
+
+if __name__ == '__main__':
+    a = [2, 7, 8, 4, 6]
+    b = [8, 4, 3, 2, 3]
+    
+    c = Pearson_correlation(a, b)
+    print(c)
