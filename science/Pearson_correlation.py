@@ -74,5 +74,5 @@ if __name__ == '__main__':
     a = [2, 7, 8, 4, 6]
     b = [8, 4, 3, 2, 3]
     
-    c = Pearson_correlation(a, b)
+    c = Pearson_correlation_coefficient(a, b)
     print(c)
