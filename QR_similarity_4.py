@@ -15,7 +15,7 @@ def QR(X):
     return list_to_str(Y)
 
 
-bits = 512
+bits = 128
 flips = bits*1
 
 X0 = get_random_binary(bits)
@@ -50,4 +50,4 @@ for i in range(flips):
 
 expected = [bits/2] * len(HDs)
 
-multi_line_chart([HDs, expected, HD_X, HD_Y], vertical_lines=[20, 30, 40, 50, bits])
+multi_line_chart([HDs, expected, HD_X, HD_Y], vertical_lines=[16, 32])#, bits])

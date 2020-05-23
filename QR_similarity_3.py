@@ -13,7 +13,7 @@ def find_cross_point(Line, Value):
     return None
 
 
-def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True, QRFs=1):
+def show_n_flip_trajectory(bits, n_mods=None, keys=100, is_average=True, QRFs=1):
     if n_mods is None:
         n_mods = bits
 
@@ -49,13 +49,15 @@ def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True, QRFs=1):
         HD_avgs.append(HDs)
     
 
-    if average:
+    if is_average:
         random_HDs = []
         for i in range(n_mods):
             X = generate_random_QR_X(int(bits/4))
             Y_str = list_to_str(crypt.use_QRF(X))
             HD = hamming_distance(Y_str, Y_base)
             random_HDs.append(HD)
+        random_avg = [average(random_HDs)] * len(random_HDs)
+        
         HD_avgs = average_lists(HD_avgs)
         #random_HDs.sort()
         mini = min(random_HDs)
@@ -64,7 +66,7 @@ def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True, QRFs=1):
         maxi_list = [maxi] * len(random_HDs)
         crossing_point = find_cross_point(HD_avgs, mini)
         print(crossing_point)
-        multi_line_chart([HD_avgs, random_HDs, mini_list, maxi_list], vertical_lines=[crossing_point], x_label='bits flipped', y_label='HD')
+        multi_line_chart([HD_avgs, random_HDs, mini_list, maxi_list, random_avg], vertical_lines=[crossing_point], x_label='bits flipped', y_label='HD')
     else:
         random_HDs = []
         for i in range(keys):
@@ -73,8 +75,8 @@ def show_n_flip_trajectory(bits, n_mods=None, keys=100, average=True, QRFs=1):
             HD = hamming_distance(Y_str, Y_base)
             random_HDs.append(HD)
         HD_avgs.append(random_HDs)
-        multi_line_chart(lines=HD_avgs, x_label='bits flipped', y_label='HD')
+        multi_line_chart(lines=HD_avgs, x_label='bits flipped', y_label='HD', dotted=True)
 
 
 if __name__ == '__main__':
-    show_n_flip_trajectory(bits=512, n_mods=128, keys=200, QRFs=1)
+    show_n_flip_trajectory(bits=128, n_mods=32, keys=1000, QRFs=1)

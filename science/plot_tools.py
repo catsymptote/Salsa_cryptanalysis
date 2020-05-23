@@ -28,7 +28,8 @@ def multi_line_chart(
         title='',
         x_label='rounds',
         y_label='Hamming distance',
-        vertical_lines:list=None
+        vertical_lines:list=None,
+        dotted=True
     ):
     if len(lines) > 1:
         for i in range(len(lines) - 1):
@@ -37,12 +38,21 @@ def multi_line_chart(
     # Create x-labels.
     xs = range(0, len(lines[0])*increment, increment)
     
-    for i in range(len(lines)):
-        plt.plot(xs, lines[i], label=str(i))#, marker='.')
+    if not dotted:
+        for i in range(len(lines)):
+            plt.plot(xs, lines[i], label=str(i))#, marker='.')
+    else:
+        linestyles = ['-', '--', '-.', ':']
+        for i in range(len(lines)):
+            linestyle_index = i % len(linestyles)
+            plt.plot(xs, lines[i], label=str(i), color='black', linestyle=linestyles[linestyle_index])
     
     if vertical_lines is not None:
         for line in vertical_lines:
-            plt.axvline(x=line, color='red', linestyle='--')
+            if not dotted:
+                plt.axvline(x=line, color='red', linestyle='--')
+            else:
+                plt.axvline(x=line, color='black', linestyle='--')
 
     plt.xlabel(x_label)
     plt.ylabel(y_label)
