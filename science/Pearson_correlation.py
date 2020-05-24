@@ -48,6 +48,8 @@ def Pearson_correlation_coefficient(X:list, Y:list) -> float:
     sd_Y = standard_deviation(Y)
     denominator = math.sqrt(sd_X) * math.sqrt(sd_Y)
 
+    if denominator == 0:
+        return 0
     r = numenator / denominator
     return r
 

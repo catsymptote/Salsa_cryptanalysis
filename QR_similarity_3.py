@@ -66,7 +66,7 @@ def show_n_flip_trajectory(bits, n_mods=None, keys=100, is_average=True, QRFs=1)
         maxi_list = [maxi] * len(random_HDs)
         crossing_point = find_cross_point(HD_avgs, mini)
         print(crossing_point)
-        multi_line_chart([HD_avgs, random_HDs, mini_list, maxi_list, random_avg], vertical_lines=[crossing_point], x_label='bits flipped', y_label='HD')
+        multi_line_chart([HD_avgs, random_HDs, mini_list, maxi_list, random_avg], vertical_lines=[crossing_point], x_label='bits flipped', y_label='HD', dotted=True)
     else:
         random_HDs = []
         for i in range(keys):
