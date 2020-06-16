@@ -55,6 +55,7 @@ def test_decrypt():
     assert len(ciphertext) == 64
 
 
+#@pytest.mark.integration_test
 def full_crypto(p_size, key_size, nonce=None):
     sal = Salsa20()
 
@@ -74,6 +75,7 @@ def full_crypto(p_size, key_size, nonce=None):
     return plaintext, decrypted_plaintext
 
 
+@pytest.mark.integration_test
 def test_full_crypto():
     # Small data set, full-key
     a1, a2 = full_crypto(1, 256)

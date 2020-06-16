@@ -1,3 +1,6 @@
+import pytest
+
+# Import algorithms.
 from salsa.chacha_prg import Chacha_PRG
 from salsa.prg import PRG
 from salsa.salsa20 import Salsa20
@@ -41,6 +44,7 @@ def test_chacha_salsa_init():
     assert type(cha.prg) is Chacha_PRG
 
 
+@pytest.mark.integration_test
 def test_full_crypto():
     """Test that:
     a --> encrypt --> decrypt --> a."""
