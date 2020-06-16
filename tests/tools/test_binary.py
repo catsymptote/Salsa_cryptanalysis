@@ -1,4 +1,4 @@
-from binary.binary import Binary
+from tools.binary import Binary
 
 
 def test_init():
@@ -12,10 +12,10 @@ def test_init():
     assert type(Bin2.bits) is str
     assert Bin2.bits == '101'
 
-    Bin3 = Binary('1100', 8)
+    Bin3 = Binary('1100')
     assert type(Bin3) is Binary
     assert type(Bin3.bits) is str
-    assert Bin3.bits == '00001100'
+    assert Bin3.bits == '1100'
 
 
 def test_set_val():
@@ -25,10 +25,10 @@ def test_set_val():
     assert Bin.bits == '101'
 
 
-def test_fix_padding():
-    Bin = Binary(5, 8)
+def test_add_padding():
+    Bin = Binary(5)
     assert Bin.bits == '101'
-    Bin.add_padding()
+    Bin.add_padding(8)
     assert Bin.bits == '00000101'
 
 
@@ -42,8 +42,8 @@ def test_dec_to_bin():
 
 def test_get_dec():
     a = Binary(3)
-    b = Binary(10, 8)
-    c = Binary(8, 4)
+    b = Binary(10)
+    c = Binary(8)
     
     assert a.get_dec() == 3
     assert b.get_dec() == 10
@@ -52,8 +52,8 @@ def test_get_dec():
 
 def test_get_hex():
     a = Binary(3)
-    b = Binary(10, 8)
-    c = Binary(8, 4)
+    b = Binary(10)
+    c = Binary(8)
     
     assert a.get_hex() == '3'
     assert b.get_hex() == 'a'
@@ -62,12 +62,18 @@ def test_get_hex():
 
 def test_get_bin():
     a = Binary(3)
-    b = Binary(10, 8)
-    c = Binary(8, 4)
+    b = Binary(10)
+    c = Binary(8)
     
-    assert a.get_dec() == '11'
-    assert b.get_dec() == '1010'
-    assert c.get_dec() == '1000'
+    # Test empty get.
+    assert a.get_bin() == '11'
+    assert b.get_bin() == '1010'
+    assert c.get_bin() == '1000'
+
+    # Test fixed-size get.
+    assert a.get_bin(5) == '00011'
+    assert b.get_bin(8) == '00001010'
+    assert c.get_bin(3) == '000'
 
 
 def test_is_binary():
@@ -82,21 +88,97 @@ def test_is_binary():
 
 def test_is_even():
     a = Binary(3)
-    b = Binary(10, 8)
-    c = Binary(8, 4)
+    b = Binary(10)
+    c = Binary(8)
+    d = Binary()
 
     assert not a.is_even()
     assert b.is_even()
     assert c.is_even()
+    assert d.is_even()
 
 
 def test_len():
     a = Binary(3)       # 11
-    b = Binary(10, 8)   # 00001010
-    c = Binary(7, 4)    # 0111
-    d = Binary(13)      # 10101
+    b = Binary(34)      # 100010
+    c = Binary(7)       # 111
+    d = Binary(13)      # 1101
+    e = Binary(1)       # 1
+    f = Binary(0)       # 0
 
     assert len(a) == 2
-    assert len(b) == 8
-    assert len(c) == 4
-    assert len(d) == 5
+    assert len(b) == 6
+    assert len(c) == 3
+    assert len(d) == 4
+    assert len(e) == 1
+    assert len(f) == 1
+
+
+def test_xor():
+    # Setup.
+    a_ = Binary('10101010')
+    b_ = Binary('11110000')
+    c_ = Binary('11010001')
+    ab = Binary('01011010')
+    ac = Binary('01111011')
+    bc = Binary('00100001')
+
+    # Type test.
+    assert type(a_ ^ b_) is Binary
+
+    # Invertible test.
+    assert a_ ^ b_ == b_ ^ a_
+
+    # Check if accurate.
+    assert a_ ^ b_ == ab
+    assert a_ ^ c_ == ac
+    assert b_ ^ c_ == bc    
+
+
+def test_hamming_weight():
+    a = Binary('11111111')
+    b = Binary('11110000')
+    c = Binary('11010011')
+    d = Binary('10000001')
+
+    # Test.
+    assert a.hamming_weight() == 8
+    assert b.hamming_weight() == 4
+    assert c.hamming_weight() == 5
+    assert d.hamming_weight() == 2
+
+
+def test_hamming_distance():
+    a = Binary('11111111')
+    b = Binary('11110000')
+    c = Binary('11010011')
+    d = Binary('10000001')
+
+    # Test.
+    
+
+    assert a.hamming_distance(b) == 4
+    assert a.hamming_distance(c) == 3
+    assert a.hamming_distance(d) == 6
+
+    assert b.hamming_distance(c) == 3
+    assert b.hamming_distance(d) == 4
+
+    assert c.hamming_distance(d) == 3
+
+
+def test_hamming_distance_hw_xor():
+    a = Binary('11111111')
+    b = Binary('11110000')
+    c = Binary('11010011')
+    d = Binary('10000001')
+
+    # Test.
+    assert a.hamming_distance_hw_xor(b) == 4
+    assert a.hamming_distance_hw_xor(c) == 3
+    assert a.hamming_distance_hw_xor(d) == 6
+
+    assert b.hamming_distance_hw_xor(c) == 3
+    assert b.hamming_distance_hw_xor(d) == 4
+
+    assert c.hamming_distance_hw_xor(d) == 3
