@@ -15,8 +15,10 @@ class Binary(str):
     def set_val(self, val):
         """Set the value."""
         if type(val) is int:
-            self.bits = self.dec_to_bin(val)
+            self.set_bin(val)
         elif self.is_binary(val):
+            # Is this test actually necessary?
+            # When will this ever happen?
             self.bits = val
         else:
             self.bits = '0'
@@ -44,9 +46,9 @@ class Binary(str):
             self.bits = self.bits[-word_size:]
 
 
-    def dec_to_bin(self, val):
+    def set_bin(self, val):
         """Convert a decimal number to binary."""
-        return bin(val)[2:]
+        self.bits = bin(val)[2:]
 
 
     def get_dec(self):
@@ -118,6 +120,46 @@ class Binary(str):
                 xor += '1'
 
         return Binary(xor)
+
+    
+    def __eq__(self, other):
+        if type(other) is Binary:
+            return self.bits == other.bits
+        elif type(other) is str:
+            return self.bits == other
+        return False
+    
+
+    def __ne__(self, other):
+        return not self == other
+
+
+    def __add__(self, other):
+        if type(other) is str:
+            other = Binary(str)
+        
+        a = self.get_dec()
+        b = other.get_dec()
+        c = Binary(a + b)
+        return c
+    
+
+    def __mod__(self, other):
+        """If int:  Set size.
+        If Binary:  Modular addition."""
+        if type(other) is int:
+            new = Binary(self.bits)
+            new.set_size(other)
+            return new
+
+        
+        length = len(self)
+        if len(other) > length:
+            length = len(other)
+
+        c = self + other
+        c.set_size(length)
+        return c
 
 
     def hamming_weight(self):

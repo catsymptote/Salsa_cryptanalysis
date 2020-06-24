@@ -47,14 +47,22 @@ class PRG():
         self.DRF_in         = []
 
 
+    ###################################
+    ## Start of Binary functionality ##
+    ###################################
+
+
+    ## Replaced with Binary.
     def to_ascii(self, a:str) -> int:
         return ord(a)
 
 
+    ## Replaced with Binary.
     def from_ascii(self, a:int) -> chr:
         return chr(a)
 
 
+    ## Replaced with Binary.
     def to_binary(self, a:int) -> str:
         binary = bin(a)
         binary = binary[2:]
@@ -64,12 +72,14 @@ class PRG():
         return binary
 
 
+    ## Replaced with Binary.
     def from_binary(self, a:str):
         #if a[:2] == '0b':
         #    a = a[2:]
         return int(a, 2)
 
 
+    ## Replaced with Binary.
     def to_bytes(self, a, length=8) -> tuple:
         if type(a) is tuple:
             a = self.to_bits(a)
@@ -84,10 +94,12 @@ class PRG():
         return tuple(byte_list)
 
 
+    ## Replaced with Binary.
     def to_words(self, a) -> tuple:
         return self.to_bytes(a, length=32)
 
 
+    ## Replaced with Binary.
     def to_bits(self, a:tuple) -> str:
         bits = ''
         for element in a:
@@ -98,6 +110,7 @@ class PRG():
             
 
 
+    ## Replaced with Binary.
     def sum_words(self, bin_a:str, bin_b:str) -> str:
         dec_a = self.from_binary(bin_a)
         dec_b = self.from_binary(bin_b)
@@ -113,6 +126,7 @@ class PRG():
         return bin_c
 
 
+    ## Replaced with Binary.
     def xor(self, a:str, b:str) -> str:
         # Length adjustment.
         if len(a) != len(b):
@@ -142,12 +156,18 @@ class PRG():
         return c
 
 
+    ## Replaced with Binary.
     def binary_left_rotation(self, word:str, a) -> str:
         """Shift"""
         new_word = ''
         for i in range(len(word)):
             new_word += word[(i+a)%len(word)]
         return new_word
+
+
+    #################################
+    ## End of Binary functionality ##
+    #################################
 
 
     def quarter(self, xor_a:str, add_a:str, add_b:str, shift:int) -> str:
@@ -158,6 +178,7 @@ class PRG():
         y1 = self.binary_left_rotation(y1, 7)
         y1 = self.xor(x1, y1)
         """
+        #bin_a = xor_a
         y_n = self.sum_words(add_a, add_b)
         y_n = self.binary_left_rotation(y_n, shift)
         y_n = self.xor(xor_a, y_n)

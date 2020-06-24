@@ -32,12 +32,17 @@ def test_add_padding():
     assert Bin.bits == '00000101'
 
 
-def test_dec_to_bin():
+def test_set_bin():
     Bin = Binary()
 
-    assert Bin.dec_to_bin(3) == '11'
-    assert Bin.dec_to_bin(10) == '1010'
-    assert Bin.dec_to_bin(8) == '1000'
+    Bin.set_bin(3)
+    assert Bin == '11'
+
+    Bin.set_bin(10)
+    assert Bin == '1010'
+
+    Bin.set_bin(8)
+    assert Bin == '1000'
 
 
 def test_get_dec():
@@ -133,6 +138,35 @@ def test_xor():
     assert a_ ^ b_ == ab
     assert a_ ^ c_ == ac
     assert b_ ^ c_ == bc    
+
+
+def test_add():
+    a = Binary(123)
+    b = Binary(345)
+    c = Binary(468)
+    assert a + b == c
+
+
+def test_mod_add():
+    a = Binary(234)
+    b = Binary(345)
+    c = Binary(500)
+    d = Binary(579)
+    
+    #print(type(a%b))
+    #print(type(c))
+    assert a % b != c
+    assert a % b != d
+    d.set_size(len(b))
+    assert a % b == d
+
+
+def test_mod_int():
+    a = Binary(46)
+    assert a == '101110'
+    assert type(a % 3) is Binary
+    assert a % 3 == '110'
+    assert a % 5 == '01110'
 
 
 def test_hamming_weight():
