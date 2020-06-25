@@ -103,6 +103,18 @@ def test_is_even():
     assert d.is_even()
 
 
+def test_LSO():
+    a = Binary('11110000')
+    a.LSO(2)
+    assert a.bits == '11000011'
+
+
+def test_LSO_overload():
+    a = Binary('11110000')
+    a.LSO(2)
+    assert a.bits == '11000011'
+
+
 def test_len():
     a = Binary(3)       # 11
     b = Binary(34)      # 100010

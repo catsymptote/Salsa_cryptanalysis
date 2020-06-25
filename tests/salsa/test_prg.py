@@ -90,7 +90,7 @@ def test_from_binary():
     assert output == 65
 
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_to_bytes():
     prg = PRG()
     words1 = make_words(n=8)
@@ -107,7 +107,7 @@ def test_to_bytes():
     assert output1 == output2
 
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_to_words():
     prg = PRG()
     bits = make_words(n=8, as_tuple=False)
@@ -118,7 +118,7 @@ def test_to_words():
         assert len(word) == 32
 
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_to_bits():
     prg = PRG()
     words = make_words(n=8)
@@ -179,6 +179,7 @@ def test_binary_left_rotation():
     assert output == '11011110'
 
 
+@pytest.mark.skip
 def test_quarter():
     """
     xor_a = 10010101

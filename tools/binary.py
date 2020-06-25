@@ -98,6 +98,11 @@ class Binary(str):
         return False
 
 
+    def LSO(self, shift):
+        for i in range(shift):
+            self.bits = self.bits[1:] + self.bits[:1]
+
+
     def __getitem__(self, index):
         """Return bit number 'index'."""
         return self.bits[index]
@@ -160,6 +165,12 @@ class Binary(str):
         c = self + other
         c.set_size(length)
         return c
+
+    
+    def __floordiv__(self, other):
+        new = Binary(self.bits)
+        new.LSO(other)
+        return new
 
 
     def hamming_weight(self):

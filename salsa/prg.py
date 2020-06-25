@@ -1,6 +1,7 @@
 """Implementation based on this description of Salsa20.
 http://www.crypto-it.net/eng/symmetric/salsa20.html?tab=0
 """
+from tools.binary import Binary
 
 
 class PRG():
@@ -29,8 +30,15 @@ class PRG():
             a_n = ''
             b_n = ''
             for j in range(4):
-                a_n += self.to_binary(PRG.A_VECTOR[i][j])
-                b_n += self.to_binary(PRG.B_VECTOR[i][j])
+                a_n += Binary(PRG.A_VECTOR[i][j]).get_bin(8)
+                b_n += Binary(PRG.B_VECTOR[i][j]).get_bin(8)
+                #A_bin_n = A_vec_n.get_bin(8)
+                #B_bin_n = B_vec_n.get_bin(8)
+                #a_n += A_vec_n
+                #b_n += B_vec_n
+
+                #a_n += self.to_binary(PRG.A_VECTOR[i][j])
+                #b_n += self.to_binary(PRG.B_VECTOR[i][j])
             self.a_vects.append(a_n)
             self.b_vects.append(b_n)
         
@@ -51,33 +59,7 @@ class PRG():
     ## Start of Binary functionality ##
     ###################################
 
-
-    ## Replaced with Binary.
-    def to_ascii(self, a:str) -> int:
-        return ord(a)
-
-
-    ## Replaced with Binary.
-    def from_ascii(self, a:int) -> chr:
-        return chr(a)
-
-
-    ## Replaced with Binary.
-    def to_binary(self, a:int) -> str:
-        binary = bin(a)
-        binary = binary[2:]
-        while len(binary)%8 != 0:
-            binary = '0' + binary
-
-        return binary
-
-
-    ## Replaced with Binary.
-    def from_binary(self, a:str):
-        #if a[:2] == '0b':
-        #    a = a[2:]
-        return int(a, 2)
-
+    
 
     ## Replaced with Binary.
     def to_bytes(self, a, length=8) -> tuple:
@@ -109,80 +91,10 @@ class PRG():
         return bits
             
 
-
-    ## Replaced with Binary.
-    def sum_words(self, bin_a:str, bin_b:str) -> str:
-        dec_a = self.from_binary(bin_a)
-        dec_b = self.from_binary(bin_b)
-        dec_c = dec_a + dec_b
-        mod_c = dec_c % 2**len(bin_a)
-        bin_c = self.to_binary(mod_c)
-
-        while len(bin_c) < len(bin_a):
-            bin_c = '0' + bin_c
-        
-        assert len(bin_a)%8 == len(bin_b)%8 == len(bin_c)%8 == 0
-
-        return bin_c
-
-
-    ## Replaced with Binary.
-    def xor(self, a:str, b:str) -> str:
-        # Length adjustment.
-        if len(a) != len(b):
-            print('PRG-XOR : Difference in length:\nlen(a):', len(a), '\nlen(b):', len(b))
-            while len(a) < len(b):
-                a = '0' + a
-            while len(b) < len(a):
-                b = '0' + b
-            while a[0] == b[0] == '0':
-                a = a[1:]
-                b = b[1:]
-                assert len(a) == len(b)
-            while len(a)%8 != 0:
-                a = '0' + a
-                b = '0' + b
-            assert len(a)%8 == len(b)%8 == 0
-
-        c = ''
-        for i in range(len(a)):
-            self.single_xor += 1
-            if a[i] == b[i]:
-                c += '0'
-            else:
-                c += '1'
-        
-        self.XORs += 1
-        return c
-
-
-    ## Replaced with Binary.
-    def binary_left_rotation(self, word:str, a) -> str:
-        """Shift"""
-        new_word = ''
-        for i in range(len(word)):
-            new_word += word[(i+a)%len(word)]
-        return new_word
-
-
     #################################
     ## End of Binary functionality ##
     #################################
 
-
-    def quarter(self, xor_a:str, add_a:str, add_b:str, shift:int) -> str:
-        """
-        y_n = xor_a XOR ((add_a + add_b) <<< shift)
-
-        y1 = self.sum_words(x0, x3)
-        y1 = self.binary_left_rotation(y1, 7)
-        y1 = self.xor(x1, y1)
-        """
-        #bin_a = xor_a
-        y_n = self.sum_words(add_a, add_b)
-        y_n = self.binary_left_rotation(y_n, shift)
-        y_n = self.xor(xor_a, y_n)
-        return y_n
 
 
     def quarterround_function(self, x:tuple) -> tuple:
@@ -215,17 +127,37 @@ class PRG():
         """
         x0, x1, x2, x3 = x
 
-        y1 = self.quarter(x1, x0, x3, 7)
-        y2 = self.quarter(x2, y1, x0, 9)
-        y3 = self.quarter(x3, y2, y1, 13)
-        y0 = self.quarter(x0, y3, y2, 18)
-        
-        y = (y0, y1, y2, y3)
+        word_size = len(x0)
 
-        if self.test_mode:
-            self.QR_x.append(x)
-            self.QR_y.append(y)
+        x0 = Binary(x0)
+        x1 = Binary(x1)
+        x2 = Binary(x2)
+        x3 = Binary(x3)
+
+        y1 = x1 ^ ((x0 % x3) // 7)
+        y2 = x2 ^ ((y1 % x0) // 9)
+        y3 = x3 ^ ((y2 % y1) // 13)
+        y0 = x0 ^ ((y3 % y2) // 18)
+
+        y0_ = y0.get_bin(word_size)
+        y1_ = y1.get_bin(word_size)
+        y2_ = y2.get_bin(word_size)
+        y3_ = y3.get_bin(word_size)
+
+        y = (y0_, y1_, y2_, y3_)
         return y
+
+        #y1 = self.quarter(x1, x0, x3, 7)
+        #y2 = self.quarter(x2, y1, x0, 9)
+        #y3 = self.quarter(x3, y2, y1, 13)
+        #y0 = self.quarter(x0, y3, y2, 18)
+        
+        #y = (y0, y1, y2, y3)
+
+        #if self.test_mode:
+        #    self.QR_x.append(x)
+        #    self.QR_y.append(y)
+        #return y
 
 
     def rowround_function(self, x:tuple) -> tuple:
@@ -323,7 +255,12 @@ class PRG():
         # 4. The final magic
         output_list = []
         for i in range(16):
-            output_element = self.sum_words(x_list[i], words[i])
+            input_1 = Binary(x_list[i])
+            input_2 = Binary(words[i])
+            output_element = input_1 % input_2
+            output_element = output_element.bits
+
+            #output_element = self.sum_words(x_list[i], words[i])
             output_element = self.littleendian_function(output_element)
             output_list.append(output_element)
         
