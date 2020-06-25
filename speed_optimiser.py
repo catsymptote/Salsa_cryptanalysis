@@ -4,7 +4,7 @@ from science.hamming_weight import *
 import time
 
 
-runs = 10000
+runs = 1000
 key_size = 8192
 
 crypt = Crypto_Tools()
