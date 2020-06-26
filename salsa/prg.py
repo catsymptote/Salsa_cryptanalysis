@@ -4,7 +4,7 @@ http://www.crypto-it.net/eng/symmetric/salsa20.html?tab=0
 from tools.binary import Binary
 
 
-class PRG():
+class PRG:
     A_VECTOR = [
         [101, 120, 112, 97],
         [110, 100, 32, 51],

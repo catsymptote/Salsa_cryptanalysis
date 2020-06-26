@@ -218,6 +218,21 @@ def test_quarterround_function():
     assert output == ('10100000001010000010100100101001', '11111011111110111111101111111011', '00000110000001100000010000000110', '01101001001010010000100101101001')
 
 
+def test_QR_word_sizes_support():
+    prg = PRG()
+    X_1 = ('0', '1', '1', '0')
+    X_2 = ('10', '01', '11', '01')
+    X_3 = ('110', '001', '101', '010')
+    X_4 = ('1001', '0101', '1001', '0101')
+    X_8 = ('10010101', '10010101', '10010101', '10010101')
+
+
+    assert prg.quarterround_function(X_1) == ('1', '1', '0', '1')
+    assert prg.quarterround_function(X_2) == ('00', '10', '11', '11')
+    assert prg.quarterround_function(X_3) == ('000', '001', '010', '100')
+    assert prg.quarterround_function(X_4) == ('0101', '0010', '1110', '0101')
+    assert prg.quarterround_function(X_8) == ('01010001', '10000000', '10111111', '01110010')
+
 
 ### All tests below here are wrong/incomplete!!
 
