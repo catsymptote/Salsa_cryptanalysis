@@ -44,7 +44,7 @@ def time_HD(n, alg, word_1, word_2):
 
 @pytest.mark.integration_test
 def test_HD_algs_speed():
-    runs = 100000
+    runs = 10000
     word_1 = '10101010'
     word_2 = '11111001'
     
@@ -57,4 +57,32 @@ def test_HD_algs_speed():
     print('1\t', round(test_1, 12), '\t', round(test_1_bin, 12))
     print('2\t', round(test_2, 12), '\t', round(test_2_bin, 12))
 
-    assert test_1 < test_1_bin < test_2_bin < test_2
+    assert 0 < test_1 < test_1_bin < test_2_bin < test_2 < 1
+    #assert 0.000001 < test_1 < test_1_bin < test_2_bin < test_2 < 0.00001
+
+
+def time_HW(n, alg, word):
+    start = time.time()
+    for i in range(n):
+        a = alg(word)
+    finished = time.time()
+    total_time = finished - start
+    return total_time/n
+
+
+@pytest.mark.integration_test
+def test_HW_algs_speed():
+    runs = 10000
+    word = '1010101011110010'
+    
+    test_1 = time_HW(runs, HW, word)
+    test_1_bin = time_HW(runs, HW, Binary(word))
+    test_2 = time_HW(runs, HW_2, word)
+    test_2_bin = time_HW(runs, HW_2, Binary(word))
+
+    print('\n#\t str\t\t Binary')
+    print('1\t', round(test_1, 12), '\t', round(test_1_bin, 12))
+    print('2\t', round(test_2, 12), '\t', round(test_2_bin, 12))
+
+    assert 0 < test_1 < test_1_bin < test_2 < test_2_bin < 1
+    #assert 0.000001 < test_1 < test_1_bin < test_2_bin < test_2 < 0.00001
