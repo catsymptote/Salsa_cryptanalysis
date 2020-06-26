@@ -1,7 +1,7 @@
 from salsa.salsa20 import Salsa20
 from science.format_tools import *
 from science.plot_tools import *
-from science.Pearson_correlation import Pearson_correlation, Pearson_on_list_of_lists
+from science.Pearson_correlation import Pearson_correlation_coefficient, Pearson_on_list_of_lists
 
 import math
 
@@ -32,7 +32,7 @@ def compare_multiple_keys(amount_of_test_values=100, QR_depth_index=0, sorted:bo
         ciphertext = sal.encrypt(message, key_guesses[i])
         QR_i = sal.prg.QR_x[QR_depth_index]
         QR_i = to_ints(QR_i)
-        similarity = Pearson_correlation(QR_0, QR_i)
+        similarity = Pearson_correlation_coefficient(QR_0, QR_i)
         key_comparisons.append(similarity)
     
     if sorted:

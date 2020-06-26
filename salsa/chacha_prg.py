@@ -1,10 +1,13 @@
 from .prg import PRG
 from tools.binary import Binary
+from salsa.QR_function import QR_chacha
 
 
 class Chacha_PRG(PRG):
     def quarterround_function(self, x:tuple) -> tuple:
         """Modified QR."""
+        return QR_chacha(x)
+        """
         a, b, c, d = x
         a = Binary(a)
         b = Binary(b)
@@ -38,10 +41,11 @@ class Chacha_PRG(PRG):
         # 4
         c = c % d
         b = b ^ c
-        b = d // 7
+        b = b // 7
         ### THIS SHOULD BE b ON BOTH SIDES! (I think...)
         #c = self.sum_words(c, d)
         #b = self.xor(b, c)
         #b = self.binary_left_rotation(d, 7)
 
         return (a.bits, b.bits, c.bits, d.bits)
+        """

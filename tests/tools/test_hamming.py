@@ -57,6 +57,9 @@ def test_HD_algs_speed():
     print('1\t', round(test_1, 12), '\t', round(test_1_bin, 12))
     print('2\t', round(test_2, 12), '\t', round(test_2_bin, 12))
 
+    # Method 1 is faster than method 2.
+        # Method 1 is faster using str.
+        # Method 2 is faster using Binary.
     assert 0 < test_1 < test_1_bin < test_2_bin < test_2 < 1
     #assert 0.000001 < test_1 < test_1_bin < test_2_bin < test_2 < 0.00001
 
@@ -84,5 +87,10 @@ def test_HW_algs_speed():
     print('1\t', round(test_1, 12), '\t', round(test_1_bin, 12))
     print('2\t', round(test_2, 12), '\t', round(test_2_bin, 12))
 
-    assert 0 < test_1 < test_1_bin < test_2 < test_2_bin < 1
+    # Method 1 is better than metohd 2.
+        # Both methods seems to be slightly faster using str than Binary.
+    assert 0 < test_1 < test_2 < 1
+    assert 0 < test_1 < test_2_bin < 1
+    assert 0 < test_1_bin < test_2_bin < 1
+    assert 0 < test_1_bin < test_2 < 1
     #assert 0.000001 < test_1 < test_1_bin < test_2_bin < test_2 < 0.00001

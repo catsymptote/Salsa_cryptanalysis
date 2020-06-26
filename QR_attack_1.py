@@ -114,7 +114,7 @@ def attack():
     print('X_g:\t', X_guess)
     print('\n')
 
-    print('Pearson:\t', Pearson_correlation(HDs, HD_Xs))
+    print('Pearson:\t', Pearson_correlation_coefficient(HDs, HD_Xs))
 
     lines = [HDs, HD_Xs, [expected_avg_HD]*len(HDs)]
 

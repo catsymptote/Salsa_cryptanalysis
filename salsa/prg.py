@@ -2,6 +2,7 @@
 http://www.crypto-it.net/eng/symmetric/salsa20.html?tab=0
 """
 from tools.binary import Binary
+from salsa.QR_function import QR
 
 
 class PRG:
@@ -125,6 +126,9 @@ class PRG:
         y0 = self.binary_left_rotation(y0, 18)
         y0 = self.xor(x0, y0)
         """
+        return QR(x)
+
+        """
         x0, x1, x2, x3 = x
 
         word_size = len(x0)
@@ -146,6 +150,7 @@ class PRG:
 
         y = (y0_, y1_, y2_, y3_)
         return y
+        """
 
         #y1 = self.quarter(x1, x0, x3, 7)
         #y2 = self.quarter(x2, y1, x0, 9)
