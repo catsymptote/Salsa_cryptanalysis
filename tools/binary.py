@@ -82,9 +82,13 @@ class Binary(str):
             return tmp.bits
 
 
-    def is_binary(self, val):
+    def is_binary(self, val:str) -> bool:
         """Check if value is a binary number."""
-        if type(val) is not Binary and type(val) is not str:
+        if type(val) is Binary:
+            val = val.bits
+        elif type(val) is str:
+            pass
+        else:
             return False
         
         for char in val:
@@ -149,16 +153,17 @@ class Binary(str):
 
     def __add__(self, other):
         if type(other) is str:
-            other = Binary(str)
+            other = Binary(other)
         
         a = self.get_dec()
         b = other.get_dec()
         c = Binary(a + b)
+        print(c)
         return c
     
 
     def __mod__(self, other):
-        """If int:  Set size.
+        """% If int:  Set size.
         If Binary:  Modular addition."""
         if type(other) is int:
             new = Binary(self.bits)
@@ -175,9 +180,10 @@ class Binary(str):
         return c
 
     
-    def __floordiv__(self, other):
+    def __floordiv__(self, shift_int):
+        """//, floordiv, rotate, LSO."""
         new = Binary(self.bits)
-        new.LSO(other)
+        new.LSO(shift_int)
         return new
 
 
@@ -189,6 +195,10 @@ class Binary(str):
                 HW += 1
         
         return HW
+
+
+    def __str__(self):
+        return self.bits
 
     
     def hamming_distance(self, other):
@@ -213,3 +223,34 @@ class Binary(str):
         HD = xor.hamming_weight()
 
         return HD
+
+
+    def split_string(self, X = None, pieces:int = 4):
+        if X is None:
+            X = self.bits
+        elif type(X) is Binary:
+            X = X.bits
+        
+        assert len(X) % pieces == 0
+        piece_length = int(len(X) / pieces)
+
+        Y = []
+        for i in range(pieces):
+            start = i * piece_length
+            stop = start + piece_length
+            piece = Binary(X[start:stop])
+            Y.append(piece)
+        
+        return tuple(Y)
+
+    def combine_string(self, X):
+        assert type(X) is tuple or type(X) is list
+
+        Y = ''
+        for elem in X:
+            if type(elem) is Binary:
+                elem = elem.bits
+            
+            Y += elem
+        
+        return Binary(Y)

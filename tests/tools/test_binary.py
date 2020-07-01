@@ -1,4 +1,5 @@
 from tools.binary import Binary
+import pytest
 
 
 def test_init():
@@ -130,8 +131,8 @@ def test_LSO():
 
 def test_LSO_overload():
     a = Binary('11110000')
-    a.LSO(2)
-    assert a.bits == '11000011'
+    b = a // 2
+    assert b.bits == '11000011'
 
 
 def test_len():
@@ -176,6 +177,8 @@ def test_add():
     b = Binary(345)
     c = Binary(468)
     assert a + b == c
+    assert a.is_binary(a)
+    assert a.is_binary(a+b)
 
 
 def test_mod_add():
@@ -184,12 +187,15 @@ def test_mod_add():
     c = Binary(500)
     d = Binary(579)
     
-    #print(type(a%b))
-    #print(type(c))
     assert a % b != c
     assert a % b != d
     d.set_size(len(b))
     assert a % b == d
+
+    assert a.is_binary(a)
+    assert b.is_binary(b)
+    assert c.is_binary(c)
+    assert d.is_binary(d)
 
 
 def test_mod_int():
@@ -198,6 +204,20 @@ def test_mod_int():
     assert type(a % 3) is Binary
     assert a % 3 == '110'
     assert a % 5 == '01110'
+
+
+def test_rotate():
+    # Rotate, LSO, floordiv, //
+    a = Binary('1111100000')
+    b = a // 3
+
+
+def test_str_print(capsys):
+    # "print(instance)"" should print the binary number. 
+    a = Binary('1001')
+    print('a:', a)
+    captured = capsys.readouterr()
+    assert captured.out == 'a: 1001\n'
 
 
 def test_hamming_weight():
@@ -247,3 +267,49 @@ def test_hamming_distance_hw_xor():
     assert b.hamming_distance_hw_xor(d) == 4
 
     assert c.hamming_distance_hw_xor(d) == 3
+
+
+def test_split_string():
+    a = '1111000011110000'
+    b = Binary(a)
+
+    A = b.split_string(a)
+    B = b.split_string(b)
+    C = b.split_string()
+    D = b.split_string(a, 8)
+    with pytest.raises(AssertionError):
+        E = b.split_string(a, 3)
+    
+    expected_result_1 = (
+        Binary('1111'),
+        Binary('0000'),
+        Binary('1111'),
+        Binary('0000')
+    )
+
+    expected_result_2 = (
+        Binary('11'),
+        Binary('11'),
+        Binary('00'),
+        Binary('00'),
+        Binary('11'),
+        Binary('11'),
+        Binary('00'),
+        Binary('00')
+    )
+
+    assert A == expected_result_1
+    assert B == expected_result_1
+    assert C == expected_result_1
+    assert D == expected_result_2
+
+
+def test_combine_string():
+    a = (
+        Binary('1111'),
+        Binary('0000'),
+        Binary('1111'),
+        Binary('0000')
+    )
+    A = Binary('1111000011110000')
+    assert A.combine_string(a) == A

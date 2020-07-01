@@ -51,10 +51,48 @@ def xor_1(X):
     return xor_0(X, bit='1')
 
 
+##################
+## ARX elements ##
+##################
+
+## A
+def add_parts(X):
+    a, b, c, d = X
+    Y = (a%b, c%d, a%d, b%c)
+    return Y
+
+
+# R (1)
+def rotate_parts(X, bits=1):
+    Y = list(X)
+    for i in range(len(X)):
+        Y[i] = X[i] // bits
+    return tuple(Y)
+
+# R (2)
+def rotate_all(X, bits=1):
+    string = Binary().combine_string(X)
+    bin_string = Binary(string)
+    bin_string = bin_string // bits
+    Y = bin_string.split_string()
+    return Y
+
+# X
+def part_xor_1(X):
+    a, b, c, d = X
+    m = a ^ b
+    n = c ^ d
+    o = a ^ d
+    p = b ^ c
+    Y = (m, n, o, p)
+    return Y
+
+
 def get_algs():
     all_algs = (
         nothing, random_bits,
         reverse_tuple, reverse_bits, reverse_full,
-        xor_0, xor_1
+        xor_0, xor_1,
+        add_parts, rotate_parts, rotate_all, part_xor_1
     )
     return all_algs
