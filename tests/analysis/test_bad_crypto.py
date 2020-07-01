@@ -73,13 +73,14 @@ def test_tools():
 def test_get_algs():
     algs = get_algs()
     assert type(algs) is tuple
-    assert len(algs) == 6
+    assert len(algs) == 7
 
 
 def test_types():
     algs = get_algs()
     X = get_X()
     for alg in algs:
+        print(alg.__name__)
         print(alg)
         Y = alg(X)
         assert type(Y) is tuple
@@ -104,6 +105,15 @@ def test_nothing():
     assert nothing(b) == b
     assert nothing(c) == c
     assert nothing(d) == d
+
+
+def test_random_bits():
+    X = get_0()
+    Y = random_bits(X)
+    assert len(Y) == len(X)
+    assert type(Y) is type(X) is tuple
+    assert Y[0].bits != X[0].bits
+    assert Y != X
 
 
 def test_reverse_tuple():

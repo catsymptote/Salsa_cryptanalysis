@@ -5,6 +5,15 @@ def nothing(X):
     return X
 
 
+def random_bits(X):
+    Y = list(X)
+    for i in range(len(X)):
+        tmp_bin = Binary()
+        tmp_bin.gen_random(word_size=len(X[i]))
+        Y[i] = tmp_bin
+    return tuple(Y)
+
+
 def reverse_tuple(X):
     X = X[::-1] # Does this work for tuples?
     return X
@@ -44,7 +53,7 @@ def xor_1(X):
 
 def get_algs():
     all_algs = (
-        nothing,
+        nothing, random_bits,
         reverse_tuple, reverse_bits, reverse_full,
         xor_0, xor_1
     )

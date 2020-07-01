@@ -1,4 +1,5 @@
 # Inherit from str, so I won't have to redo that much.
+import random
 
 
 class Binary(str):
@@ -22,6 +23,13 @@ class Binary(str):
             self.bits = val
         else:
             self.bits = '0'
+
+
+    def gen_random(self, word_size:int):
+        bits = ''
+        for i in range(word_size):
+            bits += random.choice(['0', '1'])
+        self.bits = bits
 
 
     def add_padding(self, padding):

@@ -25,6 +25,25 @@ def test_set_val():
     assert Bin.bits == '101'
 
 
+def test_gen_random():
+    Bin = Binary()
+    assert Bin.bits == '0'
+    Bin.gen_random(32)
+    assert type(Bin.bits) is str
+    assert len(Bin.bits) == 32
+
+    zeros = 0
+    ones = 0
+    for bit in Bin.bits:
+        if bit == '0':
+            zeros += 1
+        else:
+            ones += 1
+    assert 4 < zeros < 28
+    assert 4 < ones < 28
+
+
+
 def test_add_padding():
     Bin = Binary(5)
     assert Bin.bits == '101'
