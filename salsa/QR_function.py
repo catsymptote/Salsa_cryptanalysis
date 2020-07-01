@@ -3,6 +3,7 @@ from tools.binary import Binary
 
 def QR(X:tuple) -> tuple:
     """Salsa QR function."""
+    #print('X:', X)
     x0, x1, x2, x3 = X
 
     word_size = len(x0)
@@ -56,3 +57,17 @@ def QR_chacha(X:tuple) -> tuple:
     b = b // 7
 
     return (a.bits, b.bits, c.bits, d.bits)
+
+
+def QR_on_list(X_list:list, salsa=True):
+    assert type(X_list) is list
+    if salsa is True:
+        function = QR
+    else:
+        function = QR_chacha
+    
+    Y_list = []
+    for X in X_list:
+        Y = function(X)
+        Y_list.append(Y)
+    return Y_list

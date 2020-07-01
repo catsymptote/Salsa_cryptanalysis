@@ -158,7 +158,6 @@ class Binary(str):
         a = self.get_dec()
         b = other.get_dec()
         c = Binary(a + b)
-        print(c)
         return c
     
 

@@ -3,6 +3,8 @@ from tools.binary import Binary
 
 def HW(word:Binary) -> int:
     """Returns the hamming weight of input word."""
+    if type(word) is tuple:
+        word = Binary().combine_string(word)
     if type(word) is Binary:
         word = word.bits
     
@@ -12,6 +14,8 @@ def HW(word:Binary) -> int:
 
 def HW_2(word:Binary) -> int:
     """Alternative (and slower) version of HW."""
+    if type(word) is tuple:
+        word = Binary().combine_string(word)
     if type(word) is Binary:
         word = word.bits
     
@@ -25,6 +29,10 @@ def HW_2(word:Binary) -> int:
 def HD(word_1:Binary, word_2:Binary) -> int:
     """Returns the hamming distance between
     two input words."""
+    if type(word_1) is tuple:
+        word_1 = Binary().combine_string(word_1)
+    if type(word_2) is tuple:
+        word_2 = Binary().combine_string(word_2)
     distance = 0
     for i in range(len(word_1)):
         if word_1[i] != word_2[i]:
@@ -34,6 +42,10 @@ def HD(word_1:Binary, word_2:Binary) -> int:
 
 def HD_2(word_1:Binary, word_2:Binary) -> int:
     """Alternative (and slower) version of HD."""
+    if type(word_1) is tuple:
+        word_1 = Binary().combine_string(word_1)
+    if type(word_2) is tuple:
+        word_2 = Binary().combine_string(word_2)
     if type(word_1) is str:
         word_1 = Binary(word_1)
     if type(word_2) is str:
