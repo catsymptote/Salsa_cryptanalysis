@@ -54,6 +54,22 @@ class Binary(str):
             self.bits = self.bits[-word_size:]
 
 
+    def set_at(self, index, value):
+        assert type(value) is str
+        assert len(value) == 1
+        assert value == '0' or value == '1'
+        assert index <= len(self.bits)
+
+        self.bits = self.bits[:index] + value + self.bits[index+1:]
+
+
+    def flip_bit_at(self, index):
+        bit = '0'
+        if self.bits[index] == '0':
+            bit = '1'
+        self.set_at(index, bit)
+
+
     def set_bin(self, val):
         """Convert a decimal number to binary."""
         self.bits = bin(val)[2:]
@@ -80,6 +96,17 @@ class Binary(str):
             tmp = Binary(self.bits)
             tmp.set_size(word_size)
             return tmp.bits
+
+
+    def incr(self, n=1):
+        """This function increments self by n."""
+        now = self.get_dec()
+        self.set_val(now + n)
+
+
+    def decr(self, n=1):
+        """This function decrements self by n."""
+        self.incr(-n)
 
 
     def is_binary(self, val:str) -> bool:
@@ -200,6 +227,8 @@ class Binary(str):
         return self.bits
 
     
+    ## Remove Hamming functions?? ##
+
     def hamming_distance(self, other):
         """Returns the Hamming distance between
         self and other (input parameter)."""
@@ -242,6 +271,7 @@ class Binary(str):
         
         return tuple(Y)
 
+
     def combine_string(self, X):
         assert type(X) is tuple or type(X) is list
 
@@ -253,3 +283,7 @@ class Binary(str):
             Y += elem
         
         return Binary(Y)
+
+    def flip_random_bit(self):
+        index = random.randint(0, len(self.bits) - 1)
+        self.flip_bit_at(index)

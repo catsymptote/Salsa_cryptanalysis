@@ -1,4 +1,6 @@
 from tools.binary import Binary
+from tools.hamming import HD, HW
+import random
 import pytest
 
 
@@ -65,6 +67,35 @@ def test_set_bin():
     assert Bin == '1000'
 
 
+def test_set_size():
+    a = Binary('10101')
+    assert a.bits == '10101'
+    a.set_size(10)
+    assert a.bits == '0000010101'
+
+
+def test_set_at():
+    a = Binary('10101')
+    assert a.bits == '10101'
+    a.set_at(2, '0')
+    assert a.bits == '10001'
+    a.set_at(1, '1')
+    assert a.bits == '11001'
+    a.set_at(0, '1')
+    assert a.bits == '11001'
+
+
+def test_flip_bit_at():
+    a = Binary('10101')
+    assert a.bits == '10101'
+    a.flip_bit_at(2)
+    assert a.bits == '10001'
+    a.flip_bit_at(1)
+    assert a.bits == '11001'
+    a.flip_bit_at(0)
+    assert a.bits == '01001'
+
+
 def test_get_dec():
     a = Binary(3)
     b = Binary(10)
@@ -99,6 +130,34 @@ def test_get_bin():
     assert a.get_bin(5) == '00011'
     assert b.get_bin(8) == '00001010'
     assert c.get_bin(3) == '000'
+
+
+def test_incement():
+    a = Binary(30)
+    assert a.get_dec() == 30
+    assert a.bits == '11110'
+    
+    a.incr()
+    assert a.get_dec() == 31
+    assert a.bits == '11111'
+    
+    a.incr(4)
+    assert a.get_dec() == 35
+    assert a.bits == '100011'
+
+
+def test_decrement():
+    a = Binary(30)
+    assert a.get_dec() == 30
+    assert a.bits == '11110'
+    
+    a.decr()
+    assert a.get_dec() == 29
+    assert a.bits == '11101'
+    
+    a.decr(4)
+    assert a.get_dec() == 25
+    assert a.bits == '11001'
 
 
 def test_is_binary():
@@ -313,3 +372,28 @@ def test_combine_string():
     )
     A = Binary('1111000011110000')
     assert A.combine_string(a) == A
+
+
+def test_flip_random_bit():
+    a = Binary('00000000')
+    b = Binary('11111111')
+    c = Binary('11001010')
+
+    a.flip_random_bit()
+    b.flip_random_bit()
+    c.flip_random_bit()
+    
+    assert HD(a, '00000000') == 1
+    assert HD(b, '11111111') == 1
+    assert HD(c, '11001010') == 1
+
+
+def test_random_index():
+    a = Binary('1001101010')
+    indexes = [0] * len(a)
+    runs = 100
+    for i in range(runs):
+        index = random.randint(0, len(a.bits) - 1)
+        indexes[index] += 1
+    for index in indexes:
+        assert index > 0
