@@ -17,6 +17,9 @@ class Binary(str):
         """Set the value."""
         if type(val) is int:
             self.set_bin(val)
+        # This should be unnecessary, but oh well.
+        elif type(val) is Binary:
+            self.bits = val.bits
         elif self.is_binary(val):
             # Is this test actually necessary?
             # When will this ever happen?
@@ -77,6 +80,7 @@ class Binary(str):
 
     def get_dec(self):
         """Return decimal representation of self.bits."""
+        #print("bits:>" + self.bits + "<, length/type:", len(self.bits), type(self.bits))
         return int(self.bits, 2)
     
 
