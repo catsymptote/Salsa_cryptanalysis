@@ -284,6 +284,23 @@ class PRG:
         nonce is 16 bytes, and is the combination of:
             - 8 bytes of block number. (Which counts up for each 64-byte block of data.)
             - 8 bytes of cryptographic nonce. (That is, a one time 'random' number.)
+        
+        Size/length of different parts of the IS.
+        aN/bN (IV) has lengths of 32 each. I.e. self.N_vects has lengths of 128 bits.
+        keyN (subkeys) has lengths of 128 bits.
+        nonce has lengths of 128 bits, where:
+            The 1. half is "random" nonce. (It is not necessary random, though.
+                The only requirement is that it is used only once.)
+            The 2. half is the counter section. Each packet of 512 bits have a different counter.
+        Together, this makes 128 * 4 = 512 bits IS. 1/4 of this is ran thorough the QR function each round.
+            (80 rounds in a standard encryption.)
+            a0, key0*4 a1, nonce*4, a2, key1_0, key1_1, a3 (or b, for half-keys).
+        
+        # Existing knowledge about the IS parts.
+        All aN/bN are known.
+        nonce (first half) is not known, but is kept as 0 when static nonce is active.
+        nonce (second half) is predictible based on the data.
+        keyN is not known, though if half-key is used, we know key0==key1.
         """
         
         assert len(key0) == len(key1) == 128
