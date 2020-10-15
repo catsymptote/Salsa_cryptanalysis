@@ -58,4 +58,4 @@ def test_speed():
             print(func.__name__[:6], '\t', len(X[0]), '\t', time_per_run, '\t', runs_per_second)
     
     # assert False to run this test with output.
-    assert False
+    #assert False
