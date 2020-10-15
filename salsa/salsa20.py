@@ -51,7 +51,7 @@ class Salsa20:
         if nonce is None:
             nonce = self.generate_nonce()
         else:
-            print(len(nonce), nonce)
+            #print(len(nonce), nonce)
             assert len(nonce) == 64
 
         ciphertext = ''

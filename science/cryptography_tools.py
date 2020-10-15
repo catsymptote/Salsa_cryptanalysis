@@ -23,6 +23,7 @@ class Crypto_Tools:
             self.gen_QR(key, data)
         
         self.get_QR_runs += 1
+        print(len(index))
         return self.word_list_to_bits(self.QR_x[index])
 
 
