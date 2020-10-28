@@ -1,6 +1,7 @@
 from salsa.QR_function import *
 from tools.bit_generator import *
 import time
+import pytest
 
 
 
@@ -34,6 +35,7 @@ def time_QR(function, X, runs=1000):
     return total_time/runs
 
 
+@pytest.mark.integration_test
 def test_speed():
     functions = (QR, QR_chacha)
     Xs = (
