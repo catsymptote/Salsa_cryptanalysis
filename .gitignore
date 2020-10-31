@@ -3,11 +3,15 @@
 *.pyc
 ~*
 .DS_Store
+*.zip
+*.7z
+*.tmp
 
 # Dirs
 .vscode/
 .vs/
 .pytest_cache/
+output/*
 
 
 
