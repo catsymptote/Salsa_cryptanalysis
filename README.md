@@ -26,4 +26,4 @@ Where n is an integer of how many of the slowest tests you want to show.
 ### Exclude slow tests, include durations and clear before
 > clear ; python -m pytest --without-integration --without-slow-integration --durations=5
 
-Uses (pytest-integration)[https://pypi.org/project/pytest-integration/] to exclude integration and slow tests.
+Uses [pytest-integration](https://pypi.org/project/pytest-integration/) to exclude integration and slow tests.
