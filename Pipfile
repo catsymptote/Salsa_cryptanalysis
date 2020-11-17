@@ -10,6 +10,7 @@ pytest-integration = "*"
 [packages]
 matplotlib = "*"
 numpy = "==1.19.3"
+pypng = "*"
 
 [requires]
 python_version = "3.7"
