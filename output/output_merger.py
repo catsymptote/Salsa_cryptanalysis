@@ -58,4 +58,4 @@ if __name__ == "__main__":
     files = scan_dir('/')
     relevant_files = sort_files(files)
     print('Found and updated files.', flush=True)
-    combine_files(relevant_files, 'compiled_list.txt')
+    combine_files(relevant_files, 'random_compiled_list.txt')

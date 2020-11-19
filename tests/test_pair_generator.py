@@ -1,8 +1,14 @@
 from pair_generator import *
 
 
+def test_gen_random_string():
+    string = gen_random_string(24)
+    assert type(string) is str
+    assert len(string) == 24
+
+
 def test_to_binary():
-    assert to_binary('abc') == '110000111000101100011'
+    assert to_binary('abc') == '011000010110001001100011'
 
 
 def test_get_plaintext():

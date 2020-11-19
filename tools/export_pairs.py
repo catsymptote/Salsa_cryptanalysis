@@ -17,7 +17,7 @@ import os
 
 
 class Pair_exporter():
-    def __init__(self, location='output'):
+    def __init__(self, location='output/random_values'):
         self.dir = location
 
 
