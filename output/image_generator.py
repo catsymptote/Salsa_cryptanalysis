@@ -24,7 +24,10 @@ import csv
 import png
 
 
-def load_values(fil='random_compiled_list.csv', max_count=None):
+text_length = 1024
+
+
+def load_values(fil='random_compiled_QRs.csv', max_count=None):
     """Read elements from file."""
     with open(fil, newline='\n') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
@@ -52,13 +55,37 @@ def load_values(fil='random_compiled_list.csv', max_count=None):
 
 
 def padder(bits:str):
-    if len(bits) > 1024:
-        bits = bits[0:1024]
-    elif len(bits) < 1024:
-        while len(bits) < 1024:
+    if len(bits) > text_length:
+        bits = bits[0:text_length]
+    elif len(bits) < text_length:
+        while len(bits) < text_length:
             bits = '0' + bits
     
     return bits
+
+
+def create_QR_bitmaps(texts:list):
+    bitmap_images = []
+    bitmap_rows = []
+    for i in range(0, len(texts), 2):
+        # If image (bitmap_rows) is full: Append to images.
+        if len(bitmap_rows) >= 256:
+            assert len(bitmap_rows) == 256
+            bitmap_images.append(bitmap_rows.copy())
+            bitmap_rows = []
+
+        # Add two images on a single row.
+        first = texts[i]
+        second = texts[i+1]
+        row = first + second
+        bitmap_rows.append(list(row))
+    
+    if len(bitmap_rows) > 0:
+        while len(bitmap_rows) < 256:
+            empty_row = list('0' * 256)
+            bitmap_rows.append(empty_row)
+        bitmap_images.append(bitmap_rows.copy())
+    return bitmap_images
 
 
 def create_bitmaps(texts:list):
@@ -73,8 +100,8 @@ def create_bitmaps(texts:list):
     bitmap_rows = []
     for text in texts:
         # Add a single PT/CT.
-        #assert len(text) == 1024
-        for i in range(0, 1024, 256):
+        #assert len(text) == text_length
+        for i in range(0, text_length, 256):
             bitrow = list(text[i:i+256])
             bitmap_rows.append(bitrow)
     
@@ -135,28 +162,31 @@ def store_image_file(img, name):
 
 
 def name_formatter(subdir, num):
-    return 'random_images/' + subdir + '/' + str(num) + '.png'
+    return 'random_QR_images/' + subdir + '/' + str(num) + '.png'
 
 
 if __name__ == '__main__':
+    text_length = 128
+    index_modifier = int(256*256/text_length)
+
     print('Loading values...')
     nums, PTs, CTs = load_values()#max_count=200)
     print(len(PTs))
 
     print('Creating bitmaps...')
-    PT_bitmaps = create_bitmaps(PTs)
-    CT_bitmaps = create_bitmaps(CTs)
+    PT_bitmaps = create_QR_bitmaps(PTs)
+    CT_bitmaps = create_QR_bitmaps(CTs)
 
     print('Writing PT images...')
     for i in range(len(PT_bitmaps)):
-        img_name = name_formatter('PT', nums[min(i*64, len(nums) - 1)])
+        img_name = name_formatter('PT', nums[min(i*index_modifier, len(nums) - 1)])
         bitmap = PT_bitmaps[i]
         img = create_image_file(bitmap)
         store_image_file(img, img_name)
 
     print('Writing CT images...')
     for i in range(len(CT_bitmaps)):
-        img_name = name_formatter('CT', nums[min(i*64, len(nums) - 1)])
+        img_name = name_formatter('CT', nums[min(i*index_modifier, len(nums) - 1)])
         bitmap = CT_bitmaps[i]
         img = create_image_file(bitmap)
         store_image_file(img, img_name)

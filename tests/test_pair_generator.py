@@ -7,6 +7,25 @@ def test_gen_random_string():
     assert len(string) == 24
 
 
+def test_gen_random_QR():
+    X = gen_random_QR()
+    assert type(X) is tuple
+    assert len(X) == 4
+    assert type(X[0]) is str
+    assert len(X[0]) == 32
+
+    bits = 0
+    non_bit = 0
+    for word in X:
+        for bit in word:
+            if bit == '0' or bit == '1':
+                bits += 1
+            else:
+                non_bit += 1
+    assert bits == 128
+    assert non_bit == 0
+
+
 def test_to_binary():
     assert to_binary('abc') == '011000010110001001100011'
 

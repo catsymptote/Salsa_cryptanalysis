@@ -1,6 +1,7 @@
 from tools.export_pairs import Pair_exporter
 from salsa.salsa20 import Salsa20
 from tools.binary import Binary
+from salsa.QR_function import QR
 import random
 
 
@@ -12,6 +13,24 @@ def gen_random_string(length):
     string = ''
     for i in range(length):
         string += random.choice(chars)
+    return string
+
+
+def gen_random_QR():
+    X = []
+    for i in range(4):
+        word = ''
+        for j in range(32):
+            bit = random.choice(['0', '1'])
+            word += bit
+        X.append(word)
+    return tuple(X)
+
+
+def QR_to_binary(X):
+    string = ''
+    for word in X:
+        string += word
     return string
 
 
@@ -63,7 +82,7 @@ def run():
     pe = Pair_exporter()
 
     lines = 1000
-    files = 100
+    files = 2
     for i in range(files):
         #print(pe.status_scan())
         #new_num = pe.status_scan() + lines
@@ -85,5 +104,31 @@ def run():
         pe.store(output, new_num)
 
 
+def run_QR():
+    sa = Salsa20(static_nonce=get_nonce())
+    key = get_key()
+
+    pe = Pair_exporter()
+
+    lines = 1000
+    files = 1000
+    for i in range(files):
+        #print(pe.status_scan())
+        #new_num = pe.status_scan() + lines
+        
+        output = ''
+        last_num = pe.status_scan()
+        new_num = last_num + lines
+        for j in range(lines):
+            current_pair = new_num + j #i*lines + j + last_num
+            X = gen_random_QR()
+            Y = QR(X)
+            assert len(X) == len(Y) == 4
+            assert len(X[0]) == len(Y[0]) == 32
+            output += str(current_pair) + ',\t' + QR_to_binary(X) + ',\t' + QR_to_binary(Y) + '\n'
+        
+        pe.store(output, new_num)
+
+
 if __name__ == '__main__':
-    run()
+    run_QR()

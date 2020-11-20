@@ -23,6 +23,25 @@ def test_padder():
     assert padder(bits3) == '1001' * 256
 
 
+def test_create_QR_bitmaps():
+    bits = ['1011' * 32] * 8
+    assert type(bits) is list
+    assert len(bits) == 8
+    assert type(bits[0]) is str
+    assert len(bits[0]) == 128
+
+    bitmaps = create_QR_bitmaps(bits)
+    assert type(bitmaps) is list
+    assert len(bitmaps) == 1
+    assert type(bitmaps[0]) is list
+    assert len(bitmaps[0]) == 256
+    assert type(bitmaps[0][0]) is list
+    assert len(bitmaps[0][0]) == 256
+    assert type(bitmaps[0][0][0]) is str
+    assert len(bitmaps[0][0][0]) == 1
+    assert bitmaps[0][0][0] == '0' or bitmaps[0][0][0] == '1'
+
+
 def test_create_bitmaps():
     bits = ['101' * 256] * 8
     assert type(bits) is list
@@ -57,4 +76,4 @@ def test_create_image_file():
 
 
 def test_name_formatter():
-    assert name_formatter('PT', 13) == 'random_images/PT/13.png'
+    assert name_formatter('PT', 13) == 'random_QR_images/PT/13.png'

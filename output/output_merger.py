@@ -34,8 +34,10 @@ def sort_files(files:list):
 
 def combine_files(file_list, output_file):
     file_contents = []
-    counter = 0
+    
     print('Reading:')
+    print('....................')
+    counter = 0
     for fil in file_list:
         counter += 1
         if counter % 50 == 0:
@@ -44,7 +46,9 @@ def combine_files(file_list, output_file):
             text = current_file.read() + '\n'
             file_contents.append(text)
     
+    
     print('\nWriting:')
+    print('....................')
     counter = 0
     for content in file_contents:
         counter += 1
