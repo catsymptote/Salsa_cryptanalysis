@@ -105,7 +105,6 @@ def run():
 
 
 def run_QR():
-    sa = Salsa20(static_nonce=get_nonce())
     key = get_key()
 
     pe = Pair_exporter()
@@ -130,5 +129,27 @@ def run_QR():
         pe.store(output, new_num)
 
 
+def run_random():
+    pe = Pair_exporter()
+
+    lines = 1000
+    files = 1000
+    for i in range(files):
+        output = ''
+        last_num = pe.status_scan()
+        new_num = last_num + lines
+        for j in range(lines):
+            current_pair = new_num + j #i*lines + j + last_num
+            a = ''
+            b = ''
+            for i in range(1024):
+                a += random.choice(['0', '1'])
+                b += random.choice(['0', '1'])
+            assert len(a) == len(b) == 1024
+            output += str(current_pair) + ',\t' + a + ',\t' + b + '\n'
+        
+        pe.store(output, new_num)
+
+
 if __name__ == '__main__':
-    run_QR()
+    run_random()

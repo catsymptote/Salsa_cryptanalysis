@@ -28,5 +28,6 @@ Where n is an integer of how many of the slowest tests you want to show.
 
 ### In case of slow tests
 If pytest is not collecting the tests, then add `tests` after `python -m pytest`. This is due to pytest searching through a large amount of folders.
+> clear ; python -m pytest tests --without-integration --without-slow-integration --durations=5
 
 Uses [pytest-integration](https://pypi.org/project/pytest-integration/) to exclude integration and slow tests.

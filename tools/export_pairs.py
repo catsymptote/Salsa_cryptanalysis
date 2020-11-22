@@ -17,7 +17,7 @@ import os
 
 
 class Pair_exporter():
-    def __init__(self, location='output/random_QRs'):
+    def __init__(self, location='output/random_pairs_1024'):
         self.dir = location
 
 
