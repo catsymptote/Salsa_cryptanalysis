@@ -48,8 +48,11 @@ def load_values(fil:str, max_count:int = None, old_design=False):
                 PTs.append(PT)
                 CTs.append(CT)
 
+                if counter%10000 == 0:
+                    print(counter, end=', ', flush=True)
+
+                counter += 1
                 if max_count:
-                    counter += 1
                     if counter >= max_count:
                         break
         return numbers, PTs, CTs
@@ -66,10 +69,15 @@ def padder(bits:str):
 
 
 def create_bits(texts:list):
+    return '0'*1024000000
+    counter = 0
     bits = ''
     for text in texts:
         for bit in text:
             bits += bit
+            counter += 1
+            if counter%10000 == 0:
+                print(counter, flush=True)
     return bits
 
 
@@ -85,24 +93,31 @@ def create_rgb_bitmaps(texts:list):
     pixel = bitmaps[0][0][0]: list, 3
     bit = pixel[0]: str, 1 ['0', '1']
     """
+    print('started create_rgb_bitmaps')
+    print('started create_rgb_bitmaps', flush=True)
     bitmap_images = []
     bitmap_rows = []
     row = []
     pixel = []
+    print('started create_bits')
+    print('started create_bits', flush=True)
     bits = create_bits(texts)
-
+    print('started bit padding')
+    print('started bit padding', flush=True)
     # Make bits the right length.
     # Add 196607 bits for whatever reason. It seems to work.
     # 196608 == 256*256*3
     if len(bits) % 196608 != 0:
         bits += '0' * (196608 - len(bits))
+    print('Length of bits:', len(bits), flush=True)
 
     # Generate bitmaps.
     counter = 0
     for bit in bits:
         counter += 1
         pixel.append(bit)
-
+        if counter%10000000 == 0:
+            print('\n', counter, flush=True)
         
         if len(pixel) >= 3:
             row.append(pixel)

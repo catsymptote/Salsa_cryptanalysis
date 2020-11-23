@@ -6,13 +6,16 @@
 *.zip
 *.7z
 *.tmp
+*.asv
 
 # Dirs
 .vscode/
 .vs/
 .pytest_cache/
 output/*
+matlab/test/test.txt
 matlab/models/*
+matlab/images/*
 matlab/crypto_images/*
 *.mat
 
