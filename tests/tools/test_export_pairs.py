@@ -5,14 +5,14 @@ def test_init():
     pe = Pair_exporter()
     assert type(pe) is Pair_exporter
     assert type(pe.dir) is str
-    assert pe.dir == 'output/random_QRs'
+    assert pe.dir == 'output/random_pairs_1024'
 
     pe2 = Pair_exporter(location='Winnie the Pooh')
     assert pe2.dir == 'Winnie the Pooh'
 
 
 def test_gen_fname():
-    pe = Pair_exporter()
+    pe = Pair_exporter(location='output/random_QRs')
     assert pe.gen_fname('stuff') == 'output/random_QRs/stuff.txt'
 
 

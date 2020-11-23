@@ -69,7 +69,7 @@ def padder(bits:str):
 
 
 def create_bits(texts:list):
-    return '0'*1024000000
+    #return '0'*1024000000
     counter = 0
     bits = ''
     for text in texts:

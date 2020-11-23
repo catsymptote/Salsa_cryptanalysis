@@ -1,5 +1,6 @@
-# Cryptanalysis of Salsa20.
+# Salsa20 + cryptanalysis tools
 Author: Paul Knutson
+
 
 ## Included:
 * Implementation of Salsa20.
@@ -8,26 +9,35 @@ Author: Paul Knutson
     * Pearson correlation tool.
     * Hamming weight and distance tool.
 * Multiple test for Salsa and its quarter-round function.
+* Export and import tools for encryption of files and plaintexts.
+* Context Aggregation Network (CAN) in Matlab, used as a cryptanalysis tool against ciphertexts and cipherimages from Salsa20.
+
+
+## Setup
+This project uses [pipenv](https://pypi.org/project/pipenv/): A [pip](https://pypi.org/project/pip/) based package management system. Assuming pip [is already installed](https://pip.pypa.io/en/stable/installing/), you can install pip by running the following command:
+
+`pip install pipenv`
+
+Once pipenv is installed, go to the project workspace (in the terminal/CLI), and run the following command to launch the pipenv environment:
+
+`pipenv shell`
+
+Sync the environment to make sure the packages are up to date. The `-d` is added so the development packages will also sync:
+
+`pipenv sync -d`
 
 
 ## Testing
+Run the 100+ unit tests on the Python programs, by using the command:
 
-### Simple and full test
-> python -m pytest
+`python -m pytest tests`
 
-### Show test durations
-> python -m pytest --durations=5
+I suggest adding `tests` to the regular `python -m pytest`, as it will only look in the "tests" folder. Otherwise, it will take a while.
+Add `--durations=5` to also get a list of the 5 slowest tests. This is useful when attempting to implement efficient unit tests.
+Add `--without-integration` and/or `--without-slow-integration` to skip the tests marked integration or slow-integration tests (these are slower than other tests).
 
-Where n is an integer of how many of the slowest tests you want to show.
+Simple copy/paste test command:
 
-### Exclude integration and slow tests
-> python -m pytest --without-integration --without-slow-integration
+`clear ; python -m pytest tests --without-integration --without-slow-integration --durations=5`
 
-### Exclude slow tests, include durations and clear before
-> clear ; python -m pytest --without-integration --without-slow-integration --durations=5
-
-### In case of slow tests
-If pytest is not collecting the tests, then add `tests` after `python -m pytest`. This is due to pytest searching through a large amount of folders.
-> clear ; python -m pytest tests --without-integration --without-slow-integration --durations=5
-
-Uses [pytest-integration](https://pypi.org/project/pytest-integration/) to exclude integration and slow tests.
+The project uses [pytest-integration](https://pypi.org/project/pytest-integration/) to allow developers to exclude integration and slow tests.
