@@ -13,7 +13,7 @@
 .vs/
 .pytest_cache/
 output/*
-matlab/test/test.txt
+matlab/workspace/test.txt
 matlab/models/*
 matlab/images/*
 matlab/crypto_images/*

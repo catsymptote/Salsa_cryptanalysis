@@ -3,7 +3,7 @@ clc
 
 images = dir('D:\Projects\MasterThesis\Salsa_cryptanalysis\matlab\images\CT_txt\*.txt');
 
-for i=1:length(images)
+for i=4%:length(images)
     % Get file names and paths.
     file_name = images(i).name;
     read_path = fullfile('D:\Projects\MasterThesis\Salsa_cryptanalysis\matlab\images\CT_txt\', file_name);
@@ -21,14 +21,15 @@ for i=1:length(images)
         
     end
     
-    converted_text = converted_text(1:164016);
+    converted_text = converted_text(1:10240);
     
     %reshape image_data = imreshape(image_data, [256 256]); imwrite
-    converted_image = reshape(converted_text, [306*2 268]);
+    converted_image = reshape(converted_text, [20 512]);%[306*2 268]);
     %converted_image = cat(3, converted_image, converted_image, converted_image);
     
-    imshow(mat2gray(converted_image - mean(mean(converted_image))), [])
+    %imshow(mat2gray(converted_image - mean(mean(converted_image))), [])
     
-    imwrite(uint8(converted_image), write_path)
+    imwrite(uint8(mat2gray(converted_image)), write_path)
+    imshow(converted_image, []);
 
 end
