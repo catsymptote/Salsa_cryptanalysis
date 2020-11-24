@@ -4,7 +4,7 @@ import random
 
 
 class Salsa20:
-    def __init__(self, mode:str='full', static_nonce=None, chacha=False):
+    def __init__(self, mode:str='full', static_nonce=None, chacha=False, ascii_ord_convertion=True):
         if chacha:
             if mode == 'test':
                 self.prg = Chacha_PRG(test_mode=True)
@@ -18,6 +18,7 @@ class Salsa20:
         
         self.mode = mode
         self.static_nonce = static_nonce
+        self.ascii_ord_convertion = ascii_ord_convertion
 
 
     def encrypt(self, data:str, key:str, nonce=None) -> tuple:
@@ -121,7 +122,10 @@ class Salsa20:
         chars = [char for char in text]
         binary = ''
         for char in chars:
-            ascii_number = ord(char)
+            if self.ascii_ord_convertion:
+                ascii_number = ord(char)
+            else:
+                ascii_number = char
             tmp_binary = bin(ascii_number)[2:]
             while len(tmp_binary)%8 != 0:
                 tmp_binary = '0' + tmp_binary
