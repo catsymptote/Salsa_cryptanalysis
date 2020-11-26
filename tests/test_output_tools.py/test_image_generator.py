@@ -14,9 +14,13 @@ def roughly_equal(values:list, error:float = 0.9):
 
 
 def test_load_values():
-    num, PTs, CTs = load_values(fil='output/random_compiled_list.csv', max_count=3)
+    num, PTs, CTs = load_values(fil='tests\\assets\\test_csv.csv', max_count=3)
     assert type(num) == type(PTs) == type(CTs) == list
     assert len(num) == len(PTs) == len(CTs) == 3
+    for i in range(len(num)):
+        assert type(num[i]) is type(PTs[i]) is type(PTs[i]) is str
+        assert len(num[i]) == 2
+        assert len(PTs[i]) == len(PTs[i]) == 4
 
 
 def test_padder():
@@ -193,4 +197,4 @@ def test_create_image_file():
 
 
 def test_name_formatter():
-    assert name_formatter('output_folder', 'PT', 13) == 'output_folder/PT/13.png'
+    assert name_formatter('tests', 'assets', 13) == 'output_folder/PT/13.png'

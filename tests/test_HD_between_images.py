@@ -14,28 +14,25 @@ def test_pad_binary():
 @pytest.mark.integration_test
 def test_image_HD():
     # Same image results in 0.
-    img1 = 'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/PTs/001/01_lg_PT.png'
-    img2 = 'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/PTs/001/01_lg_PT.png'
+    img1 = 'tests\\assets\\test_image_arch.png'
+    img2 = 'tests\\assets\\test_image_arch.png'
     HD, bits = image_HD(img1, img2, return_bits=True)
-    assert bits == 1572864
+    assert bits == 393216
     assert HD == 0
 
     # Different images results in different values, and thus an HD well above 0.
-    img1 = 'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/PTs/001/01_lg_PT.png'
-    img2 = 'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/CTs/001/01_lg_CT.png'
+    img1 = 'tests\\assets\\test_image_arch.png'
+    img2 = 'tests\\assets\\test_image_kali.png'
     #assert image_HD(img1, img2) > 0
     HD, bits = image_HD(img1, img2, return_bits=True)
-    assert bits == 1572864
-    assert HD == 774999
+    assert bits == 393216
+    assert HD == 324387
 
 
 def test_get_images():
-    directory = 'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/CTs/001'
+    directory = 'tests\\assets'
     images = [
-        'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/CTs/001\\01_lg_CT.png',
-        'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/CTs/001\\02_lg_CT.png',
-        'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/CTs/001\\03_lg_CT.png',
-        'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/CTs/001\\04_lg_CT.png',
-        'D:/Projects/MasterThesis/Salsa_cryptanalysis/matlab/crypto_images/images/CTs/001\\05_lg_CT.png'
+        'tests\\assets\\test_image_arch.png',
+        'tests\\assets\\test_image_kali.png'
     ]
     assert get_images(directory) == images
