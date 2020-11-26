@@ -49,7 +49,8 @@ def get_images(directory):
         for name in files:
             f_name, f_ext = os.path.splitext(name)
             if f_ext.lower() in ['.png', '.bmp', '.jpg', '.jpeg', '.tiff']:
-                paths.append(os.path.join(path, name))
+                full_path = os.path.join(path, name)
+                paths.append(full_path.replace('\\', '/'))
     
     return paths
 
