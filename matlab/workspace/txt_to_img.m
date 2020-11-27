@@ -11,7 +11,7 @@ for folder_index=1:200
     dir_name = char(strcat('D:\Projects\MasterThesis\Salsa_cryptanalysis\matlab\images\_images_from_kiran\train\', num2str(folder_index), '\'));
     end
     
-    images = dir(char(strcat(dir_name, '\*lg.code')));
+    images = dir(char(strcat(dir_name, '\*lg_CT.code')));
 
 
 
@@ -19,7 +19,7 @@ for folder_index=1:200
         % Get file names and paths.
         file_name = images(image_index).name;
         read_path = fullfile(dir_name, file_name);
-        write_path= fullfile(dir_name, file_name); write_path = char(strrep(write_path, '_lg.code', '_lg_PT.png'));
+        write_path= fullfile(dir_name, file_name); write_path = char(strrep(write_path, '_lg_CT.code', '_lg_CT.png'));
         disp(file_name);
         disp(read_path);
         disp(write_path);
@@ -39,7 +39,7 @@ for folder_index=1:200
         %reshape image_data = imreshape(image_data, [256 256]); imwrite
         converted_image = reshape(converted_text, [261 10]);%[306*2 268]);
         converted_image = imresize(converted_image', [256 256]);%[306*2 268]);256
-        %converted_image = cat(3, converted_image, converted_image, converted_image);
+        converted_image = cat(3, converted_image, converted_image, converted_image);
 
         %imshow(mat2gray(converted_image - mean(mean(converted_image))), [])
 
