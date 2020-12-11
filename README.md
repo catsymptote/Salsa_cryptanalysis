@@ -38,6 +38,32 @@ Add `--without-integration` and/or `--without-slow-integration` to skip the test
 
 Simple copy/paste test command:
 
-`clear ; python -m pytest tests --without-integration --without-slow-integration --durations=5`
+`clear ;; python -m pytest tests --without-integration --without-slow-integration --durations=5`
 
 The project uses [pytest-integration](https://pypi.org/project/pytest-integration/) to allow developers to exclude integration and slow tests.
+
+
+## Use
+
+### Simple encrypt-decrypt
+Once the pip environment is launched, either run `python` in the command line, or make a python script.
+
+<code>
+from salsa.salsa20 import Salsa20
+<br>
+sa = Salsa20()
+<br>
+PT = 'Hello World'
+<br>
+key = '0110' * 32
+<br>
+CT, nonce = sa.encrypt(PT, key)
+<br>
+PT_2 = sa.decrypt(CT, key, nonce)
+<br>
+print(CT)
+<br>
+print(PT_2)
+</code>
+
+And the output should be seemingly random characters from the CT, and `Hello World!` from the PT_2. (The same as the original PT.)
